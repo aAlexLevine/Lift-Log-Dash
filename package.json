@@ -1,0 +1,43 @@
+{
+  "name": "boiler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "react-dev": "webpack -d --watch",
+    "server-dev": "nodemon server/index.js",
+    "start": "webpack-dev-server --hot ----history-api-fallback"
+  },
+  "author": "Beth Johnson",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.4",
+    "clean-webpack-plugin": "^2.0.1",
+    "css-loader": "^1.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^0.23.0",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.1",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "dependencies": {
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
+    "axios": "^0.18.0",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.0",
+    "jquery": "^3.1.1",
+    "mysql": "^2.13.0",
+    "parse-ms": "^2.0.0",
+    "pretty-ms": "^4.0.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-hot-loader": "next",
+    "react-router-dom": "^5.0.0",
+    "recharts": "^1.5.0"
+  }
+}
