@@ -12,6 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const styles = theme => ({
   main: {
@@ -48,51 +49,86 @@ const styles = theme => ({
   }
 });
 
-function RegisterUser(props) {
-  const { classes } = props;
+class RegisterUser extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userName: '',
+      pass: '',
+      email: ''
+    }
+  }
 
-  return (
-    // <main className={classes.main}>
-    <div className={classes.main}>
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <HowToRegIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-         Register an Account
-        </Typography>
+  handleChange = (e) => {
+    this.setState({[e.target.name]: e.target.value})
+    console.log(e.target.value)
+  }
 
-        <form className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel>Name</InputLabel>
-            <Input id="userName" name="userName" autoFocus />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
-            <Input id="email" name="email" autoComplete="email"/>
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input name="password" type="password" id="password" autoComplete="current-password" />
-          </FormControl>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Register
-          </Button>
-        </form>
-      
-          <Typography className={classes.signUp} variant="subtitle2" align="center">
-            <Link to="/landingPage/signIn"> Have an account? Log in here! </Link>
+  handleSubmit = () => {
+    const { userName, pass, email } = this.state
+    const userInfo = {userName, pass, email}
+    console.log('handleSubmit')
+    axios.post('/api/auth/register', userInfo)
+      .then(res => {
+        this.setState({
+          userName: '',
+          pass: '',
+          email: ''
+        })
+        //redirect
+        console.log(res.data)
+      })
+
+    
+  }
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      // <main className={classes.main}>
+      <div className={classes.main}>
+        <Paper className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <HowToRegIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+          Register an Account
           </Typography>
-      </Paper>
-    </div>
-    // </main>
-  );
+
+          <form className={classes.form} autoComplete="off">
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel>Name</InputLabel>
+              <Input id="userName" name="userName" value={this.state.userName} onChange={this.handleChange} autoFocus />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="email">Email Address</InputLabel>
+              <Input id="email" name="email" value={this.state.email} onChange={this.handleChange}/>
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input name="pass" id="pass" value={this.state.pass} onChange={this.handleChange}/>
+            </FormControl>
+            <Button
+              onClick={this.handleSubmit}
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+
+            >
+              Register
+            </Button>
+          </form>
+        
+            <Typography className={classes.signUp} variant="subtitle2" align="center">
+              <Link to="/landingPage/signIn"> Have an account? Log in here! </Link>
+            </Typography>
+        </Paper>
+      </div>
+      // </main>
+    );
+  }
 }
 
 export default withStyles(styles)(RegisterUser);

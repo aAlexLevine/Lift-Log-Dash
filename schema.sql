@@ -9,7 +9,8 @@ CREATE TABLE users (
   name varchar(255) NOT NULL,
   email varchar(255) NOT NULL,
   pass varchar(255) NOT NULL,
-  PRIMARY KEY (ID)
+  PRIMARY KEY (ID),
+  UNIQUE (name)
 );
 
 CREATE TABLE plans (

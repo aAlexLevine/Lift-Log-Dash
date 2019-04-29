@@ -1,23 +1,33 @@
 const express = require('express');
 const db = require('../database-mysql');
+const jwt = require('jsonwebtoken');
+const config = require('./config.js')
+
 const router = express.Router()
 
+// Verify jwt Middleware
+router.use((req, res, next) => {
+  if (!req.signedCookies.jwt) {
+    console.log('jwt not present verify')
+    return next('router')
+  }
+  jwt.verify(req.signedCookies.jwt, config.jwt.secret, (err, authData) => {
+    if (err) {
+      console.log('jwt can not verify')
+      return res.send("JWT Middleware verification failed")
+    } else {
+      req.userID = authData.userID
+      console.log('jwt accepted')
+      next()
+    }
+  })
+})
 
-router.get('/items', function (req, res) {
-  console.log('fireeddd')
-  db.selectAll()
-  .then( (response) => {
-      // console.log(response)
-      res.send(response)
-    })
-    .catch((err)=> {
-      console.log(err)
-    })
+router.get('/test', function (req, res) {
+  res.send('----response test')
 });
 
 router.post('/createNewWorkout', (req, res) => {
-  //run DB method takes  promise and catch 
-  console.log('body--',req.body)
   db.createNewWorkOut(req.body)
     .then(response => {
       console.log('Response from DB, recieved at server createNewWorkOut', response)
@@ -27,7 +37,6 @@ router.post('/createNewWorkout', (req, res) => {
 })
 
 router.get('/getPlans', (req, res) => {
-  console.log('server ----------------')
   db.getPlans(req.query.user)
     .then( response => res.send(response))
     .catch( err => console.log(err))

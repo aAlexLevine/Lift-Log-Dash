@@ -12,6 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const styles = theme => ({
   main: {
@@ -48,51 +49,82 @@ const styles = theme => ({
   }
 });
 
-function SignIn(props) {
-  const { classes } = props;
 
-  return (
-    // <main className={classes.main}>
-    <div className={classes.main}>
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
-            <Input id="email" name="email" autoComplete="email" autoFocus />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input name="password" type="password" id="password" autoComplete="current-password" />
-          </FormControl>
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
+class SignIn extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userName: '',
+      pass: ''
+    }
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  handleSubmit = () => {
+    const { userName, pass } = this.state
+    axios.post('/api/auth/login', {userName, pass})
+      .then(res => {
+        this.setState({
+          userName: '',
+          pass: ''
+        })
+        console.log(res.data)
+      })
+      .catch(err => console.log(err))
+  }
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      // <main className={classes.main}>
+      <div className={classes.main}>
+        <Paper className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
             Sign in
-          </Button>
-        </form>
-      
-          <Typography className={classes.signUp} variant="subtitle2" align="center">
-            <Link to="/landingPage/register"> Need an account? Sign up here! </Link>
           </Typography>
+          <form className={classes.form}>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="userName">User Name</InputLabel>
+              <Input id="userName" name="userName" value={this.state.userName} onChange={this.handleChange} autoFocus />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="pass">Password</InputLabel>
+              <Input name="pass" id="pass" value={this.state.pass} onChange={this.handleChange}/>
+            </FormControl>
+            {/* <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            /> */}
+            <Button
+              // type="submit"
+              onClick={this.handleSubmit}
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign in
+            </Button>
+          </form>
         
-      </Paper>
-      </div>
-    // </main>
-  );
+            <Typography className={classes.signUp} variant="subtitle2" align="center">
+              <Link to="/landingPage/register"> Need an account? Sign up here! </Link>
+            </Typography>
+          
+        </Paper>
+        </div>
+      // </main>
+    );
+  }
 }
 
 

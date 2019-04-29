@@ -151,6 +151,37 @@ const getAllWorkoutLogsByGroup = (userID, planID, group) => {
   })
 }
 
+const insertUser = (userName, email, hash) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`
+      INSERT INTO users (name, email, pass)
+      VALUES ('${userName}', '${email}', '${hash}')`, 
+      (err, results) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(results)
+        }
+    })
+  })
+}
+
+const findUser = (userName) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`
+      SELECT * 
+      FROM users
+      WHERE name='${userName}'`, 
+      (err, results) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(results)
+        }
+    })
+  })
+}
+
 
 module.exports = {
   selectAll,
@@ -161,5 +192,7 @@ module.exports = {
   insertSets,
   getLastThreeLogIds,
   getSetsRestByLogid,
-  getAllWorkoutLogsByGroup
+  getAllWorkoutLogsByGroup,
+  insertUser,
+  findUser
 };
