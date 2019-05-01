@@ -36,7 +36,7 @@ class CreateNewWorkout extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/getPlans', {
+    axios.get('/api/dash/getPlans', {
       params: {
         user: this.props.userID
       }
@@ -51,7 +51,7 @@ class CreateNewWorkout extends React.Component {
   }
 
   getGroupsFromSelectedPlan = (planID) => {
-    axios.get('/api/getGroups', {
+    axios.get('/api/dash/getGroups', {
       params: {
         id: planID
       }
@@ -73,7 +73,7 @@ class CreateNewWorkout extends React.Component {
     }
     console.log('log data obj',logData)
     if (selectedPlan && selectedGroup) {
-      axios.post('/api/createNewWorkOut', logData)
+      axios.post('/api/dash/createNewWorkOut', logData)
         .then(results => {
           // console.log('Created new workout log.', results.data)
           const selected = {

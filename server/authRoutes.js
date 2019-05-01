@@ -4,13 +4,15 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('./config.js')
 
-const router = express.Router()
+const routerSecond = express.Router()
 
-router.get('/test', (req, res) => {
+routerSecond.get('/test', (req, res) => {
+  console.log('cookie?', req.signedCookies)
   res.send("test fired")
+  
 })
 
-router.post('/login', (req, res) => {
+routerSecond.post('/login', (req, res) => {
   const {userName, pass} = req.body
   const errMess = "Login information is incorrect"
   db.findUser(userName)
@@ -38,7 +40,7 @@ router.post('/login', (req, res) => {
     .catch(err => console.log(err))
 })
 
-router.post('/register', (req, res) => {
+routerSecond.post('/register', (req, res) => {
   const { userName, pass, email } = req.body
   db.findUser(userName)
     .then(user => {
@@ -55,9 +57,9 @@ router.post('/register', (req, res) => {
     .catch(err => console.log(err))
 })
 
-router.post('/logout', (req, res) => {
+routerSecond.post('/logout', (req, res) => {
   res.clearCookie('jwt', config.jwt.cookie)
   res.send('logged out')
 })
 
-module.exports = router
+module.exports = routerSecond

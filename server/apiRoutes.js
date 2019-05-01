@@ -2,29 +2,13 @@ const express = require('express');
 const db = require('../database-mysql');
 const jwt = require('jsonwebtoken');
 const config = require('./config.js')
+const middleWare = require('./Middleware.js')
 
 const router = express.Router()
+router.use(middleWare.verify)
 
-// Verify jwt Middleware
-router.use((req, res, next) => {
-  if (!req.signedCookies.jwt) {
-    console.log('jwt not present verify')
-    return next('router')
-  }
-  jwt.verify(req.signedCookies.jwt, config.jwt.secret, (err, authData) => {
-    if (err) {
-      console.log('jwt can not verify')
-      return res.send("JWT Middleware verification failed")
-    } else {
-      req.userID = authData.userID
-      console.log('jwt accepted')
-      next()
-    }
-  })
-})
-
-router.get('/test', function (req, res) {
-  res.send('----response test')
+router.get('/isAuth', function (req, res) {
+  res.send({value: true})
 });
 
 router.post('/createNewWorkout', (req, res) => {

@@ -6,7 +6,8 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import classNames from 'classnames';
-import { mainListItems, secondaryListItems } from './ListItems.jsx';
+import { mainListItems, SecondaryListItems } from './ListItems.jsx';
+import { notAuthItems } from './NotAuthItems.jsx';
 
 const drawerWidth = 240;
 
@@ -40,22 +41,29 @@ const styles = (theme)=> ({
 const SideMenu = (props) => {
   const { classes } = props 
   return (
-         <Drawer
-          variant="permanent"
-          classes={{
-            paper: classNames(classes.drawerPaper, !props.open && classes.drawerPaperClose),
-          }}
-          open={props.open}
+        <Drawer
+            variant="permanent"
+            open={props.open}
+            classes={{
+              paper: classNames(classes.drawerPaper, !props.open && classes.drawerPaperClose)
+            }}
         >
-          <div className={classes.toolbarIcon}>
-            <IconButton onClick={props.handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </div>
-          <Divider />
-            <List>{mainListItems}</List>
-          <Divider />
-          {/* <List>{secondaryListItems}</List> */}
+            <div className={classes.toolbarIcon}>
+              <IconButton onClick={props.handleDrawerClose}>
+                <ChevronLeftIcon />
+              </IconButton>
+            </div>
+          
+            <Divider />
+
+            {props.isAuth
+              ? <div>
+                  <List>{mainListItems}</List>
+                  <Divider />
+                  <SecondaryListItems setAuthFromLogOut={props.setAuthFromLogOut}/>
+                </div>
+              : <List>{notAuthItems}</List>
+            }
         </Drawer>
   )
 }

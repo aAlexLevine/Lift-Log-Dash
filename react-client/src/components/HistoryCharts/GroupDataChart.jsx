@@ -42,7 +42,7 @@ class GroupDataChart extends React.Component {
   }
 
   getSetsRestData(logID) {
-    return axios.get('/api/getSetsRestByLogid', {
+    return axios.get('/api/dash/getSetsRestByLogid', {
       params: {
         logID: logID
       }

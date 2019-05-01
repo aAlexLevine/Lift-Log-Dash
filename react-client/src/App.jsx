@@ -1,26 +1,45 @@
 import { hot } from 'react-hot-loader';
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import NavBar from './components/NavBar/NavBar.jsx';
-import LandingPage from './components/LandingPage/LandingPage.jsx';
-import DashBoard from './components/DashBoard/DashBoard.jsx'
+import DashBoard from './components/DashBoard/DashBoard.jsx';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLoggedIn: false
+      isAuth: false 
     }
+  }
+
+  componentDidMount() {
+    axios.get('/api/dash/isAuth')
+      .then(response => {
+        console.log('response in isAuthCLient', response.data)
+        this.setState({isAuth: response.data.value}) 
+      })
+      .catch(err => console.log(err))
+  }
+
+  setAuthFromLogIn = () => {
+    this.setState({isAuth: true})
+  }
+  setAuthFromLogOut = () => {
+    this.setState({isAuth: false})
   }
 
   render() {
     return (
       <div>      
         <Router>
-          <Route render={(props) => <DashBoard {...props} isLoggedIn={this.state.isLoggedIn}/>} />
+          <Route render={(props) => (
+              <DashBoard {...props} 
+                  isAuth={this.state.isAuth}
+                  setAuthFromLogIn={this.setAuthFromLogIn}  
+                  setAuthFromLogOut={this.setAuthFromLogOut}    
+                  />
+          )}/>
+          
         </Router>
       </div>
     )
@@ -28,4 +47,3 @@ class App extends React.Component {
 }
 
 export default hot(module)(App);
-

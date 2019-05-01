@@ -28,7 +28,7 @@ class Dashboard extends React.Component {
       open: false,
       drawerWidth: 240,
       userID: 1
-  }
+    }
   };
 
   handleDrawerOpen = () => {
@@ -53,11 +53,17 @@ class Dashboard extends React.Component {
         <SideMenu
           handleDrawerClose={this.handleDrawerClose}
           open={this.state.open}
+          isAuth={this.props.isAuth}
+          setAuthFromLogOut={this.props.setAuthFromLogOut}
         />
          
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
-            <DashRouter userID={this.state.userID}/>
+            <DashRouter 
+              userID={this.state.userID}
+              setAuthFromLogIn={this.props.setAuthFromLogIn}
+              isAuth={this.props.isAuth}
+            />
         </main>
       </div>
     );

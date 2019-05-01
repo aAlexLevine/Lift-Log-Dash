@@ -72,7 +72,7 @@ class NewWorkoutTable extends React.Component {
   componentDidMount() {
     // this.getDate()
     const { group } = this.props.details
-    axios.get('/api/getExercisesByGroup', {
+    axios.get('/api/dash/getExercisesByGroup', {
         params: {
           groupID: group.id
         }
@@ -94,7 +94,7 @@ class NewWorkoutTable extends React.Component {
   getLastThreeLogIds = () => {
     const { userID, plan: { id }, group: { title } } = this.props.details
     const getSetsRestData = (logID) => {
-      return axios.get('/api/getSetsRestByLogid', {
+      return axios.get('/api/dash/getSetsRestByLogid', {
         params: {
           logID: logID
         }
@@ -102,7 +102,7 @@ class NewWorkoutTable extends React.Component {
       .then(log => this.organizeSetsRestData(log.data))
     }
 
-    axios.get('/api/getLastThreeLogIds', {
+    axios.get('/api/dash/getLastThreeLogIds', {
       params: {
         userID: userID,
         planID: id,

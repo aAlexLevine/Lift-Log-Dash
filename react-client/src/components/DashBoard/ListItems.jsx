@@ -9,7 +9,9 @@ import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import axios from 'axios';
+
 export const mainListItems = (
   <div>
    <Link to="/">
@@ -57,26 +59,35 @@ export const mainListItems = (
   </div>
 );
 
-export const secondaryListItems = (
-  <div>
-    <ListSubheader inset>Saved reports</ListSubheader>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Current month" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Last quarter" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
-    </ListItem>
-  </div>
-);
+export class SecondaryListItems extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      redirect: false
+    }
+  }
+
+  logout = () => {
+    this.props.setAuthFromLogOut() 
+    this.setState({redirect: true})
+    axios.post('/api/auth/logout')
+      .then(res => console.log('logout client', res))
+      .catch(err => console.log(err))
+  }
+
+  render() {
+    if (this.state.redirect) {
+      return <Redirect to ="/landingPage"/>
+    } 
+    return (
+        <div>
+          <ListItem button onClick={this.logout}>
+            <ListItemIcon>
+              <AssignmentIcon />
+            </ListItemIcon>
+            <ListItemText primary="Log out" />
+          </ListItem>
+        </div>
+      )
+    }
+  }

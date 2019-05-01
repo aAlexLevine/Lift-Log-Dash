@@ -5,6 +5,7 @@ import HomeDash from '../HomeDash/HomeDash.jsx'
 import HistoryCharts from '../HistoryCharts/HistoryCharts.jsx'
 import NewWorkoutTable from '../NewWorkout/NewWorkoutTable.jsx'
 import TestColors from '../HistoryCharts/testcolors.jsx'
+import AuthRoute from './AuthRoute.jsx';
 
 class DashRouter extends React.Component {
   constructor(props){
@@ -21,25 +22,37 @@ class DashRouter extends React.Component {
   render() {
     return ( 
       <div>
-          <Route exact path="/" render={() => (<Redirect to="/landingPage"/>)}/>
-          <Route path="/landingPage" render={(props) => <LandingPage {...props}/>}/>
-          <Route path="/home" render={(props) => (
-              <HomeDash 
-                  {...props} 
-                  userID={this.props.userID}
-                  liftStateUpFromCreateNewWorkout={this.liftStateUpFromCreateNewWorkout}
-              />)} 
-              />
-          <Route path="/historyCharts" render={(props )=> (
-              <HistoryCharts 
+          <Route 
+              exact path="/" 
+              render={() => (<Redirect to="/landingPage"/>)}
+          />
+          <Route 
+              path="/landingPage" 
+              render={(props) => <LandingPage {...props} 
+                setAuthFromLogIn={this.props.setAuthFromLogIn}
+                isAuth={this.props.isAuth}
+                />}
+          />
+          <AuthRoute 
+              path="/home" 
+              component={HomeDash} 
               userID={this.props.userID}
-              />
-          )}/>
-          <Route path="/new" render={(props)=> (
-              <NewWorkoutTable 
-                  details={this.state.newWorkoutProps}
-              />
-          )}/>
+              liftStateUpFromCreateNewWorkout={this.liftStateUpFromCreateNewWorkout}
+              isAuth={this.props.isAuth}
+          />
+          <AuthRoute 
+              path="/historyCharts" 
+              component={HistoryCharts} 
+              userID={this.props.userID}
+              isAuth={this.props.isAuth}
+          />
+  
+          <AuthRoute 
+              path="/new" 
+              component={NewWorkoutTable} 
+              details={this.state.newWorkoutProps}
+              isAuth={this.props.isAuth}
+          />
 
           
           <Route path="/testColors" component={TestColors} />

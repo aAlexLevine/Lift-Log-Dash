@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import GetStarted from './GetStarted.jsx'
 import SignIn from './SignIn.jsx'
-import RegisterUser from './RegisterUser.jsx'
+import RegisterUser from './RegisterUser.jsx';
 
 const styles = theme => ({
   '@global': {
@@ -41,7 +41,7 @@ const styles = theme => ({
 });
 
 function LandingPage(props) {
-  const { classes } = props;
+  const { classes, setAuthFromLogIn, isAuth } = props;
   return (
     <React.Fragment>
       <div className={classes.layout}>
@@ -58,13 +58,17 @@ function LandingPage(props) {
         </div>
         {/* End hero unit */}
       
-        <div className={classes.getStartedContainer}>
+      {isAuth 
+        ? null
+        : <div className={classes.getStartedContainer}>
           <div>
-            <Route exact path="/landingPage/" component={GetStarted}/>
-            <Route path="/landingPage/signIn" component={SignIn}/>
-            <Route path="/landingPage/register" component={RegisterUser}/>
+            <Route exact path="/landingPage/" component={GetStarted} />
+            <Route path="/landingPage/signIn" render={(props)=> (
+              <SignIn setAuthFromLogIn={setAuthFromLogIn} {...props}/>)}/>
+              <Route path="/landingPage/register" component={RegisterUser} />
           </div>
-        </div> 
+        </div>
+      }  
 
       </div>
       {/* Footer */}

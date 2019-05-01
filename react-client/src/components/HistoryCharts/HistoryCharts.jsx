@@ -47,7 +47,7 @@ class HistoryCharts extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/getPlans', {
+    axios.get('/api/dash/getPlans', {
       params: {
         user: this.props.userID
       }
@@ -67,7 +67,7 @@ class HistoryCharts extends React.Component {
 
   getGroups = (planID) => {
     this.setState({toggleControls: true})
-    axios.get('/api/getGroups', {
+    axios.get('/api/dash/getGroups', {
       params: {
         id: planID
       }
@@ -78,7 +78,7 @@ class HistoryCharts extends React.Component {
 
   getAllWorkoutLogsByGroup = () => {
     const fetchLogs = (user, plan, group) => {
-      return axios.get('/api/getAllWorkoutLogsByGroup', {
+      return axios.get('/api/dash/getAllWorkoutLogsByGroup', {
         params: {
           userID: user,
           planID: plan,

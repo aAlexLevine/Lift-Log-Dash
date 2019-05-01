@@ -11,7 +11,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 
 const styles = theme => ({
@@ -55,7 +55,9 @@ class SignIn extends React.Component {
     super(props);
     this.state = {
       userName: '',
-      pass: ''
+      pass: '',
+      redirect: false,
+      errMessage: ''
     }
   }
 
@@ -69,17 +71,37 @@ class SignIn extends React.Component {
     const { userName, pass } = this.state
     axios.post('/api/auth/login', {userName, pass})
       .then(res => {
-        this.setState({
-          userName: '',
-          pass: ''
-        })
-        console.log(res.data)
+          this.setState({
+            userName: '',
+            pass: '',
+            redirect: true,
+            errMessage: ''
+          }, this.props.setAuthFromLogIn)
+          console.log(res.data)
       })
+      .catch(err => {
+        console.log(err)
+        this.setState({errMessage: "Log in credentials are incorrect."})
+      })
+  }
+
+  logout = () => {
+    axios.post('/api/auth/logout')
+      .then(res => console.log('logout client', res))
       .catch(err => console.log(err))
+  }
+
+  test = () => {
+    axios.get('/api/auth/test')
+    .then(res => console.log('client api test', res))
+    .catch(err => console.log(err))
   }
 
   render() {
     const { classes } = this.props;
+    if (this.state.redirect) {
+      return <Redirect to="/home"/>
+    }
 
     return (
       // <main className={classes.main}>
@@ -114,6 +136,16 @@ class SignIn extends React.Component {
             >
               Sign in
             </Button>
+
+            <Button onClick={this.logout} color="secondary">
+              run logout 
+            </Button>
+
+            <Button onClick={this.test} color="secondary">
+              run test api 
+            </Button>
+
+            <Typography variant="subtitle2" align="center" color="secondary">{this.state.errMessage}</Typography>
           </form>
         
             <Typography className={classes.signUp} variant="subtitle2" align="center">
