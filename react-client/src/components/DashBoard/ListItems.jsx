@@ -12,43 +12,40 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 
+const links = {
+  textDecoration: 'none'
+}
+
 export const mainListItems = (
   <div>
-   <Link to="/">
+   <Link to="/" style={links}>
     <ListItem button>
       <ListItemIcon>
-        <DashboardIcon />
+        <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Landing Page" />
     </ListItem>
   </Link> 
     
-    <Link to="/home">
+    <Link to="/home" style={links}>
     <ListItem button>
       <ListItemIcon>
-        <ShoppingCartIcon />
+        <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Home" />
     </ListItem>
     </Link>
 
-  <Link to="/historyCharts">
-    <ListItem button>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="History Charts" />
-    </ListItem>
-  </Link>
-  
+  <Link to="/historyCharts" style={links}>
     <ListItem button>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText primary="Reports" />
+      <ListItemText primary="History Charts" />
     </ListItem>
+  </Link>
 
-  <Link to="/testColors">
+  <Link to="/testColors" style={links}>
     <ListItem button>
       <ListItemIcon>
         <LayersIcon />
@@ -83,7 +80,7 @@ export class SecondaryListItems extends React.Component {
         <div>
           <ListItem button onClick={this.logout}>
             <ListItemIcon>
-              <AssignmentIcon />
+              <PeopleIcon />
             </ListItemIcon>
             <ListItemText primary="Log out" />
           </ListItem>

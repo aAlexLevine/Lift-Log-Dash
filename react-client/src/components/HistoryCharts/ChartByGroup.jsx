@@ -13,7 +13,7 @@ class ChartByGroup extends PureComponent {
       <LineChart
         width={1000}
         height={300}
-        data={maxLifts}
+        data={this.props.dataTypeSelected}
         margin={{
           top: 5, right: 30, left: 20, bottom: 5,
         }}

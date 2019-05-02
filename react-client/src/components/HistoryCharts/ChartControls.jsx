@@ -10,10 +10,16 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
 const styles = (theme) => ({
-  root: {
+  maxLiftRadio: {
     color: green[600],
     '&$checked': {
       color: green[500],
+    },
+  },
+  avgLiftRadio: {
+    color: theme.palette.primary.main,
+    '&$checked': {
+      color: theme.palette.primary.main,
     },
   },
   checked: {},
@@ -32,11 +38,12 @@ const styles = (theme) => ({
 
 class ChartControls extends React.Component {
   state = {
-    selectedValue: 'a',
+    value: 'maxLiftsData',
   };
 
   handleChange = event => {
-    this.setState({ selectedValue: event.target.value });
+    this.setState({ value: event.target.value });
+    this.props.setDataType(event. target.value)
   };
 
   render() {
@@ -45,27 +52,32 @@ class ChartControls extends React.Component {
     return (
       <div>
       <FormControl component="fieldset" className={classes.formControl}>
-      <FormLabel focused={false} component="legend">Data Sets</FormLabel>
+      <FormLabel focused={false} component="legend">Data Type</FormLabel>
       {/* <div> */}
       <RadioGroup row
-        aria-label="gender"
-        name="gender2"
+        aria-label="Data Type"
+        name="Data Type"
         className={classes.group}
         value={this.state.value}
         onChange={this.handleChange}
       >
       {/* <div className={classes.radiosContainer}> */}
         <FormControlLabel
-          value="Max lift"
-          control={<Radio color="primary" />}
+          value="maxLiftsData"
+          control={
+            <Radio color="primary" 
+            classes={{
+              root: classes.avgLiftRadio,
+              checked: classes.checked}} 
+            />}
           label="Max lift"
           labelPlacement="end"
         />
         <FormControlLabel
-          value="Average"
+          value="averageRepLiftsData"
           control={
             <Radio classes={{
-              root: classes.root,
+              root: classes.maxLiftRadio,
               checked: classes.checked}} 
               />
             }

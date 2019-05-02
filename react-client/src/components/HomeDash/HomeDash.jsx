@@ -4,11 +4,12 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import CreateNewWorkout from './CreateNewWorkout.jsx';
-import ExampleChart from './ExampleCharts.jsx'
+import LastWeeksBarChart from './LastWeeksBarChart.jsx'
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
+
 
 const styles = theme => ({
   root: {
@@ -53,7 +54,7 @@ function HomeDash(props) {
           <Typography variant="subtitle1" gutterBottom>
                 Last week's progress
               </Typography>
-              <ExampleChart/>
+              <LastWeeksBarChart/>
           </Paper>
         </Grid>
 

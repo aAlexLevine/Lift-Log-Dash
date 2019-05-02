@@ -51,6 +51,14 @@ router.get('/getLastThreeLogIds', (req, res) => {
     .catch(err => console.log(err))
 })
 
+router.get('/getLastXLogIds', (req, res) => {
+  const { qty } = req.query
+  const { userID } = req
+  db.getLastXLogIds(userID, qty)
+    .then(response => res.send(response))
+    .catch(err => console.log(err))
+})
+
 router.get('/getSetsRestByLogid', (req, res) => {
   console.log('server log id', req.query.logID)
   db.getSetsRestByLogid(req.query.logID)

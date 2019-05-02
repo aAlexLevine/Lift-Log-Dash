@@ -67,7 +67,8 @@ class SignIn extends React.Component {
     })
   }
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+    e.preventDefault()
     const { userName, pass } = this.state
     axios.post('/api/auth/login', {userName, pass})
       .then(res => {
@@ -113,7 +114,7 @@ class SignIn extends React.Component {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form}>
+          <form className={classes.form} onSubmit={this.handleSubmit}>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="userName">User Name</InputLabel>
               <Input id="userName" name="userName" value={this.state.userName} onChange={this.handleChange} autoFocus />
@@ -127,8 +128,7 @@ class SignIn extends React.Component {
               label="Remember me"
             /> */}
             <Button
-              // type="submit"
-              onClick={this.handleSubmit}
+              type="submit"
               fullWidth
               variant="contained"
               color="primary"
@@ -137,11 +137,11 @@ class SignIn extends React.Component {
               Sign in
             </Button>
 
-            <Button onClick={this.logout} color="secondary">
+            <Button type="button" onClick={this.logout} color="secondary">
               run logout 
             </Button>
 
-            <Button onClick={this.test} color="secondary">
+            <Button type ="button" onClick={this.test} color="secondary">
               run test api 
             </Button>
 

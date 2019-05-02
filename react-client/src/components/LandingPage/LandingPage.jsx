@@ -10,7 +10,7 @@ import RegisterUser from './RegisterUser.jsx';
 const styles = theme => ({
   '@global': {
     body: {
-      backgroundColor: theme.palette.common.white,
+      backgroundColor: '#eef4f75c'//theme.palette.common.white,
     },
   },
   layout: {
@@ -52,8 +52,8 @@ function LandingPage(props) {
             Welcome
           </Typography>
           <Typography variant="h6" align="center" color="textSecondary" component="p">
-            Quickly build an effective pricing table for your potential customers with this layout.
-            It&apos;s built with default Material-UI components with little customization.
+            Build and customize your own personal workout plans. Use your plan to organize and complete 
+            your goals. Monitor your all your progress and success. Get Started Below.
           </Typography>
         </div>
         {/* End hero unit */}

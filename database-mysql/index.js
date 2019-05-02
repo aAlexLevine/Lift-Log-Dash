@@ -116,6 +116,24 @@ const getLastThreeLogIds = (userID, planID, group) => {
   })
 }
 
+const getLastXLogIds = (userID, qty) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`
+    SELECT * 
+    FROM logs
+    WHERE user_id=${userID} AND exists (select id from sets_rest where logs_id=logs.id)
+    ORDER BY dateCreated DESC
+    LIMIT ${qty};`, 
+    (err, results, fields) => {
+      if(err) {
+        reject(err)
+      } else {
+        resolve(results)
+      }
+    })
+  })
+}
+
 const getSetsRestByLogid = (logID) => {
   return new Promise((resolve, reject) => {
     connection.query(`
@@ -191,8 +209,9 @@ module.exports = {
   getExercisesByGroup,
   insertSets,
   getLastThreeLogIds,
+  getLastXLogIds,
   getSetsRestByLogid,
   getAllWorkoutLogsByGroup,
   insertUser,
-  findUser
+  findUser,
 };

@@ -10,6 +10,7 @@ const drawerWidth = 240;
 const styles = theme => ({
   root: {
     display: 'flex',
+    backgroundColor: '#eef4f75c'//theme.palette.common.white
     // backgroundColor:'#b8ddef17'
   },
   appBarSpacer: theme.mixins.toolbar,

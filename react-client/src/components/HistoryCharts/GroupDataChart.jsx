@@ -30,6 +30,9 @@ class GroupDataChart extends React.Component {
     if (prevProps.logs !== this.props.logs) {
       this.getLogsCorrespondingSetsData()
     }
+    if (prevProps.dataTypeSelected !== this.props.dataTypeSelected) {
+
+    }
   }
 
   getLogsCorrespondingSetsData() {
@@ -107,7 +110,7 @@ class GroupDataChart extends React.Component {
     const totalRepsPerformed = sets.reduce((sum, set) => sum + set.reps, 0)
     const averageRep = totalWeightLifted / totalRepsPerformed
     const averageWeightUsed = sets.reduce((sum, set) => sum + set.weight, 0) / totalSets
-
+  
     // console.log('total weights lifted', totalWeightLifted)
     // console.log('totalRepsPerformed', totalRepsPerformed)
     return averageRep || null
@@ -118,8 +121,9 @@ class GroupDataChart extends React.Component {
       <div style={chartContainer}>
         <div style={groupTitle}>{this.props.groupTitle}</div>
         <ChartByGroup 
-            maxLifts={this.state.maxLiftsData} 
-            avgRep={this.state.averageRepLiftsData}
+            dataTypeSelected={this.state[this.props.dataTypeSelected]}
+            // maxLifts={this.state.maxLiftsData} 
+            // avgRep={this.state.averageRepLiftsData}
             uniqueExercises={this.state.uniqueExercises}/>
       </div>
     )
@@ -130,7 +134,7 @@ export default GroupDataChart;
 
 const chartContainer = {
   width: '100%',
-  marginBottom: '100px'
+  marginBottom: '50px'
 }
 
 const chart = {
