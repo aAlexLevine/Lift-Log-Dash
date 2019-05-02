@@ -7,6 +7,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
+import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { Link, Redirect } from 'react-router-dom';
@@ -42,6 +43,15 @@ export const mainListItems = (
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="History Charts" />
+    </ListItem>
+  </Link>
+
+  <Link to="/addPlans" style={links}>
+    <ListItem button>
+      <ListItemIcon>
+        <LibraryAddIcon />
+      </ListItemIcon>
+      <ListItemText primary="Add Plans" />
     </ListItem>
   </Link>
 
