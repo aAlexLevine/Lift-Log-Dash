@@ -200,6 +200,50 @@ const findUser = (userName) => {
   })
 }
 
+const insertNewPlan = (userID, planName) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`
+      INSERT INTO plans (user_id, planName)
+      VALUES (${userID}, '${planName}')`, 
+      (err, results) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(results)
+        }
+      })
+  })
+}
+
+const insertNewGroup = (title, planID, setCount) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`
+      INSERT INTO groups (title, plan_id, setCount)
+      VALUES ('${title}', ${planID}, ${setCount})`, 
+      (err, results) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(results)
+        }
+      })
+  })
+}
+
+const insertNewExercise = (name, numOfReps ,planID, groupID) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`
+      INSERT INTO exercises (name, numOfReps, plan_id, group_id)
+      VALUES ('${name}', ${numOfReps}, ${planID}, ${groupID})`, 
+      (err, results) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(results)
+        }
+      })
+  })
+}
 
 module.exports = {
   selectAll,
@@ -214,4 +258,7 @@ module.exports = {
   getAllWorkoutLogsByGroup,
   insertUser,
   findUser,
+  insertNewPlan,
+  insertNewGroup,
+  insertNewExercise
 };

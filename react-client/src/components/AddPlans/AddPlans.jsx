@@ -70,7 +70,10 @@ const styles = theme => ({
   }
 })
 
+// TODO:
 // Add a check that plan name is not already being used by this user
+// Check no duplicate exercise/ group names in planForm
+// Make all inputs required
 
 class AddPlans extends React.Component {
   constructor(props) {
@@ -146,6 +149,12 @@ class AddPlans extends React.Component {
     const copyForm = update(planForm, 
       {groups: {[groupIndex]: {exercises: {$splice : [[exerciseIndex, 1]]}}}})
       this.setState({planForm: copyForm})
+  }
+
+  submit = () => {
+    axios.post('/api/dash/createNewPlan', this.state.planForm)
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
   }
 
   render() {
@@ -295,7 +304,12 @@ class AddPlans extends React.Component {
               <Button className={classes.save} 
                   color="primary" 
                   variant="contained" 
-                  size="large">submit plan</Button>
+                  size="large"
+                  onClick={this.submit}
+                  >
+                  submit plan
+              </Button>
+                  
             </CardActions>
         </Card>
       </div>

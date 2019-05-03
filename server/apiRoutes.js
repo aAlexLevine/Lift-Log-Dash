@@ -73,4 +73,23 @@ router.get('/getAllWorkoutLogsByGroup', (req, res) => {
     .catch(err => console.log(err))
 })
 
+router.post('/createNewPlan', (req, res) => {
+  const planForm  = req.body
+  const { userID } = req
+  db.insertNewPlan(userID, planForm.planName)
+  .then(response => response.insertId)
+  .then(plan => {
+    planForm.groups.forEach((group, i) => {
+      db.insertNewGroup(group.title, plan, group.defaultSets)
+        .then(result => {
+          planForm.groups[i].exercises.forEach(ex => {
+            db.insertNewExercise(ex.name, ex.defaultReps, plan, result.insertId)
+          })
+        })
+    })
+    res.send('Plan created.')
+  })
+  .catch(err => console.log(err))
+})
+
 module.exports = router
