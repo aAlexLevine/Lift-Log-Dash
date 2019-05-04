@@ -16,6 +16,7 @@ import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/DeleteForeverOutlined';
 import CardActions from '@material-ui/core/CardActions';
 import update from 'immutability-helper';
+import { Redirect } from 'react-router-dom';
 
 
 const styles = theme => ({
@@ -153,12 +154,18 @@ class AddPlans extends React.Component {
 
   submit = () => {
     axios.post('/api/dash/createNewPlan', this.state.planForm)
-    .then(res => console.log(res))
+    .then(res => {
+      console.log(res)
+      this.setState({redirect: true})
+    })
     .catch(err => console.log(err))
   }
 
   render() {
     const { classes } = this.props
+    if (this.state.redirect) {
+      return <Redirect to="home"/>
+    }
     return (
       <div>
         <Card>
@@ -201,12 +208,12 @@ class AddPlans extends React.Component {
                         title={ 
                           <div>
                             <FormControl className={classes.formControl}>
-                              <InputLabel htmlFor={`groupTitle${i}`} 
+                              <InputLabel htmlFor="groupTitle" 
                                   classes={{root: classes.cssLabel, focused: classes.cssFocused}}
                               >
                                 Group Name
                               </InputLabel>
-                              <Input id={`groupTitle${i}`} className={classes.inputView} 
+                              <Input id="groupTitle" className={classes.inputView} 
                                   classes={{underline: classes.cssUnderline}} 
                                   onChange={(e)=> this.updateGroup(e, i, 'title')}
                                   value={this.state.planForm.groups[i].title}

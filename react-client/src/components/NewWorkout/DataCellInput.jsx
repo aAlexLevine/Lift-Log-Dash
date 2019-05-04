@@ -10,13 +10,8 @@ import purple from '@material-ui/core/colors/purple';
 import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
-  root: {
-    // display: 'flex',
-    // flexWrap: 'wrap',
-  },
   margin: {
     margin: 5,
-    // width: '100%'3
   },
   cssLabel: {
     '&$cssFocused': {
@@ -38,39 +33,12 @@ const styles = theme => ({
   }
 })
 
-class DataCellInput extends React.Component { 
-  constructor(props){
-    super(props);
-    this.state = {
-      weight: '',
-      reps: ''
-    }
-    this.handleWeightChange = this.handleWeightChange.bind(this)
-    this.handleRepsChange = this.handleRepsChange.bind(this)
-  }
 
-  handleWeightChange(e) {
-    let reps
-    this.state.reps === '' ? reps = this.props.defaultreps : reps = this.state.reps
-    this.setState({
-      weight: e.target.value
-    }, () => {
-      this.props.updateWeightPropertyForDataCell(this.props.exercise.name, this.props.setNum, this.state.weight, reps)
-    })
-  }
-
-  handleRepsChange (e) {
-    this.setState({reps: e.target.value})
-    this.props.updateRepsPropertyForDataCell(this.props.exercise.name, this.props.setNum, e.target.value)
-  }
-
-  render() {
-    const { classes } = this.props;
-    return (
-      <TableCell >
+const DataCellInput = (props) => {
+  const { classes, formLocation, updateExerciseValues, exercise, set } = props;
+  return (
+    <TableCell >
       <div className={classes.inputContainer}>
-        {/* <button onClick={()=>this.setState()}>update</button> */}
-        {/* <input  type="text" defaultValue={this.props.defaultreps} onChange={this.handleRepsChange}/>  */}
         <div className={classes.padd}>
         <FormControl className={classes.margin}>
         <InputLabel
@@ -83,9 +51,10 @@ class DataCellInput extends React.Component {
           Reps
         </InputLabel>
         <Input
-          // id="reps"
+          id="reps"
           className={classes.inputView}
-          defaultValue="5"
+          value={formLocation.reps}
+          onChange={(e) => updateExerciseValues(exercise, set, 'reps', e.target.value)}
           classes={{
             underline: classes.cssUnderline,
           }}
@@ -93,49 +62,31 @@ class DataCellInput extends React.Component {
       </FormControl>
       </div>
         <div className={classes.xDivider}>x</div>
-        {/* <Typography variant="subtitle1">X</Typography> */}
-        
-        
-        {/* <input type="text" value={this.state.weight} onChange={this.handleWeightChange}/> */}
-        <FormControl className={classes.margin}>
+    
+      <FormControl className={classes.margin}>
         <InputLabel
-          // htmlFor="weight"
+          htmlFor="weight"
           classes={{
             root: classes.cssLabel,
             focused: classes.cssFocused
           }}
-          >
-          lbs
-          </InputLabel>
-          <Input
-          // id="weight"
+        >
+        lbs
+        </InputLabel>
+        <Input
+          id="weight"
           className={classes.inputView}
+          value={formLocation.weight || ''}
+          onChange={(e) => updateExerciseValues(exercise, set, 'weight', e.target.value)}
           classes={{
             underline: classes.cssUnderline,
           }}
-          />
-        </FormControl>
-        </div> 
-      
-      </TableCell>
-  
-    )
-  }
+        />
+      </FormControl>
+    </div> 
+  </TableCell>
+  )
 }
 
+
 export default withStyles(styles)(DataCellInput);
-// plain with line and subtitle under line
-          // <Input
-          //   id="adornment-weight"
-          //   value={this.state.weight}
-          //   onChange={this.handleChange('weight')}
-          //   aria-describedby="weight-helper-text"
-          //   endAdornment={<InputAdornment position="end">Kg</InputAdornment>}
-          //   inputProps={{
-          //     'aria-label': 'Weight',
-          //   }}
-          // />
-
-
-          // completely bare
-          // <InputBase className={classes.margin} defaultValue="Naked input" />

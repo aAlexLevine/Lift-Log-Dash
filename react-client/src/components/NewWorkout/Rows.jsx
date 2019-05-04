@@ -7,10 +7,14 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import classNames from 'classnames';
-import Slide from '@material-ui/core/Slide';
-import Collapse from '@material-ui/core/Collapse';
 import Grow from '@material-ui/core/Grow';
 
+const firstColumn = {  
+  position: 'sticky',
+  left: '0',
+  zIndex: 1,
+  backgroundColor: 'white'
+ }
 
 const styles = (theme) => ({
   toggle: {
@@ -39,34 +43,28 @@ class Rows extends React.Component {
       togglePreviousWorkouts: false,
       expanded: null
     }
-    this.togglePreviousWorkouts = this.togglePreviousWorkouts.bind(this)
   }
 
-  togglePreviousWorkouts() {
+  togglePreviousWorkouts = () => {
     this.setState({togglePreviousWorkouts: !this.state.togglePreviousWorkouts})
   }
 
-//if set length greater that current total update table headers
   render() {
-    const { classes } = this.props;
-
-
+    const { classes, formLocation, exercise, updateExerciseValues } = this.props;
     return (
       <React.Fragment>
         <TableRow hover={true}>
           <TableCell padding="default" style={firstColumn }>
             <div className={classes.contentContainer}>
-             
               {this.props.exercise.name}
              <div>
               <IconButton 
-              // className={classes.toggle} onClick={this.togglePreviousWorkouts} aria-label="ExpandMore"
-              className={classNames(classes.expand, classes.toggle, {
-                [classes.expandOpen]: this.state.togglePreviousWorkouts,
-              })}
-              onClick={this.togglePreviousWorkouts}
-              aria-expanded={this.state.togglePreviousWorkouts}
-              aria-label="Show more"
+                className={
+                  classNames(classes.expand, classes.toggle, { [classes.expandOpen]:this.state.togglePreviousWorkouts, })
+                } 
+                onClick={this.togglePreviousWorkouts}
+                aria-expanded={this.state.togglePreviousWorkouts} 
+                aria-label="Show more"
               >
                 <ExpandMoreIcon />
               </IconButton>
@@ -76,12 +74,11 @@ class Rows extends React.Component {
           </TableCell>
           {[... new Array(this.props.setCount)].map((header, i) => (
             <React.Fragment key={'frag' + i}>
-              <DataCellInput setNum={i + 1} 
-                            exercise={this.props.exercise}
-                            defaultreps={this.props.defaulteps} 
-                            updateWeightPropertyForDataCell={this.props.updateWeightPropertyForDataCell} 
-                            updateRepsPropertyForDataCell={this.props.updateRepsPropertyForDataCell}
-                            />
+              <DataCellInput set={'set' + (i + 1)}
+                            formLocation={formLocation['set' + (i + 1)]} 
+                            updateExerciseValues={updateExerciseValues}
+                            exercise={this.props.exercise.name}
+              />
               {i + 1 < this.props.setCount ? 
                 <DataCellTimer setNum={i + 1}
                               updateRestTime={this.props.updateRestTimePropertyForDataCell} 
@@ -93,14 +90,14 @@ class Rows extends React.Component {
         </TableRow>
 
       {/* TODO: sort each array, turn into separate component */}
-      {this.state.togglePreviousWorkouts ? 
-        this.props.previousWorkouts.map((workout, i) =>  (
-          // <Slide timeout={{enter: 2000, exit:1000}} key={'historyRow' + i} direction="up" in={this.state.togglePreviousWorkouts} mountOnEnter unmountOnExit>
+      {this.state.togglePreviousWorkouts 
+        ? this.props.previousWorkouts.map((workout, i) =>  (
             <Grow key={'grow'+i}
-            in={this.state.togglePreviousWorkouts}
-            style={{ transformOrigin: '0 0 0' }}
-            timeout={{enter: 500*(i+1), exit: 2000}}>
-            <TableRow >
+                in={this.state.togglePreviousWorkouts}
+                style={{ transformOrigin: '0 0 0' }}
+                timeout={{enter: 500*(i+1), exit: 2000}}
+            >
+            <TableRow>
               <TableCell align="right" style={firstColumn}>{new Date(workout.date).toDateString()}</TableCell>
                 {workout[this.props.exercise.name].sets.map((set, i) => (
                   <React.Fragment key={'setRestHistory' + i}>
@@ -110,8 +107,9 @@ class Rows extends React.Component {
               ))} 
             </TableRow>
             </Grow>
-            // </Slide>
-        )) : null}
+          )) 
+        : null
+      }
      
       </React.Fragment>
     )
@@ -120,14 +118,3 @@ class Rows extends React.Component {
 
 export default withStyles(styles)(Rows);
 
-const firstColumn = {  
-//  borderBottom: '1px solid black',
-//  padding: '8px',
- position: 'sticky',
- left: '0',
- zIndex: 1,
- backgroundColor: 'white',//'#ab47bc',
-// color: 'blue',//'#ab47bc',
-    // flexWrap: 'wrap',
-
-}

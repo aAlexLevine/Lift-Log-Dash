@@ -7,6 +7,7 @@ import NewWorkoutTable from '../NewWorkout/NewWorkoutTable.jsx'
 import TestColors from '../HistoryCharts/testcolors.jsx'
 import AuthRoute from './AuthRoute.jsx';
 import AddPlans from '../AddPlans/AddPlans.jsx'
+import TableContainer from '../NewWorkout/TableContainer.jsx';
 
 class DashRouter extends React.Component {
   constructor(props){
@@ -50,7 +51,8 @@ class DashRouter extends React.Component {
   
           <AuthRoute 
               path="/new" 
-              component={NewWorkoutTable} 
+              // component={NewWorkoutTable} 
+              component={TableContainer}
               details={this.state.newWorkoutProps}
               isAuth={this.props.isAuth}
           />
