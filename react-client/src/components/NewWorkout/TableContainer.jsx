@@ -2,6 +2,27 @@ import React from 'react';
 import axios from 'axios';
 import NewWorkoutTable from './NewWorkoutTable.jsx'
 import update from 'immutability-helper';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import purple from '@material-ui/core/colors/purple';
+import { Redirect } from 'react-router-dom'
+import { YYYYMMDDformat } from '../../utils/helpers.js';
+
+const styles = theme => ({
+  margin: {
+    // margin: theme.spacing.unit,
+    marginTop: '20px'
+  },
+  cssRoot: {
+    color: theme.palette.getContrastText(purple[500]),
+    backgroundColor: purple[500],
+    '&:hover': {
+      backgroundColor: purple[700],
+    },
+  },
+
+})
 
 class TableContainer extends React.Component {
   constructor(props){
@@ -30,10 +51,10 @@ class TableContainer extends React.Component {
   }
 
   getLastThreeLogIds = () => {
-    const { userID, plan: { id }, group: { title } } = this.props.details
+    const { plan: { id }, group: { title } } = this.props.details
     axios.get('/api/dash/getLastThreeLogIds', {
       params: {
-        userID: userID,
+        // userID: userID,
         planID: id,
         group: title
       }
@@ -88,7 +109,7 @@ class TableContainer extends React.Component {
   updateExerciseValues = (exercise, set, prop, value) => {
     console.log('update',exercise)
     const copyForm = update(this.state.dataCellInputs, {
-      [exercise]: {[set]: {[prop]: {$set: value}}}
+      [exercise]: {[set]: {[prop]: {$set: parseInt(value)}}}
     })
     this.setState({dataCellInputs: copyForm})
   }
@@ -102,26 +123,27 @@ class TableContainer extends React.Component {
       console.log('rest changed', this.state.dataCellInputs))
   }
 
-  submitSets() {
-    const exerciseRows = this.state.dataCellInputs
-    let postObj
-    for (let row in exerciseRows) {
-      for (let set in exerciseRows[row]) {
-        postObj = {
-          logID: this.props.logID,
-          data: exerciseRows[row][set]
-        }
-        axios.post('/insertSets', postObj)
-        .then()
-        .catch(err => console.log(err))
-      }
-    }
-    console.log('submitted')
+  submitSets = () => {
+    console.log('date after submit', this.props.details.date)
+    axios.post('/api/dash/submitWorkout', {
+      logID: this.props.details.logID,
+      workoutData: this.state.dataCellInputs,
+      date: YYYYMMDDformat(this.props.details.date)
+    })
+    .then(results => {
+      console.log(results.data)
+      this.setState({redirect: true})
+    })
+    .catch(err => console.log(err))
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to="/home"/>
+    }
     const { exercises, previousWorkouts, dataCellInputs } = this.state
-    const { setCount } = this.props.details.group
+    const { plan: { planName }, group: { title, setCount }, date } = this.props.details
+    const { classes } = this.props
     return (
       <div>
         <NewWorkoutTable 
@@ -131,10 +153,21 @@ class TableContainer extends React.Component {
            dataCellInputs={dataCellInputs}
            updateExerciseValues={this.updateExerciseValues}
            updateRestTimePropertyForDataCell={this.updateRestTimePropertyForDataCell}
+           groupTitle={title}
+           planName={planName}
+           date={date}
         />
+        <Button
+          variant="contained"
+          color="primary"
+          className={classNames(classes.margin, classes.cssRoot)}
+          onClick={this.submitSets}
+        >
+          Submit
+        </Button>
       </div>
     )
   }
 }
 
-export default TableContainer;
+export default withStyles(styles)(TableContainer);

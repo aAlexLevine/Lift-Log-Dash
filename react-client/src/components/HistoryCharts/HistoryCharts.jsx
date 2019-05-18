@@ -8,14 +8,14 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import classNames from 'classnames';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import GroupDataChart from './GroupDataChart.jsx';
 import ChartControls from './ChartControls.jsx';
 import Slide from '@material-ui/core/Slide';
-import { relative } from 'path';
-
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 
 const styles = theme => ({
   root: {
@@ -31,6 +31,13 @@ const styles = theme => ({
   topPaper: {
     bottom: '100px',
     width: '50%'
+  },
+  headers: {
+    color: 'white'
+  },
+  chartCardHeader: {
+    backgroundColor: '#4a4949',
+    marginBottom: '15px'
   }
 });
 
@@ -51,7 +58,7 @@ class HistoryCharts extends React.Component {
   componentDidMount() {
     axios.get('/api/dash/getPlans', {
       params: {
-        user: this.props.userID
+        // user: this.props.userID
       }
     })
       .then(plans => {this.setState({plansData: plans.data})})
@@ -79,10 +86,10 @@ class HistoryCharts extends React.Component {
   }
 
   getAllWorkoutLogsByGroup = () => {
-    const fetchLogs = (user, plan, group) => {
+    const fetchLogs = (plan, group) => {
       return axios.get('/api/dash/getAllWorkoutLogsByGroup', {
         params: {
-          userID: user,
+          // userID: user,
           planID: plan,
           group: group
         }
@@ -90,7 +97,7 @@ class HistoryCharts extends React.Component {
       .then(logs => logs.data)
     }
     const logRequests = this.state.groups.map(group => (
-      fetchLogs(this.props.userID, this.state.selectedPlan.id, group.title)
+      fetchLogs(this.state.selectedPlan.id, group.title)
       )
     )
     
@@ -111,22 +118,31 @@ class HistoryCharts extends React.Component {
     return (
       <div className={classes.root}>
         <Grid container spacing={24}>
-          <Grid item xs={3}>
-            <Paper className={classes.paper}>
-              <Typography variant="h4" gutterBottom>
-                Progress Charts
-              </Typography>
-              <Typography variant="body1" gutterBottom>
+          <Grid item sm={4} xs={12}>
+
+
+          <Card>
+            <CardHeader disableTypography
+                className={classes.chartCardHeader}
+                title={
+                  <Typography 
+                    className={classes.headers} 
+                    variant="subtitle1">
+                     Progress Charts
+                  </Typography>
+                }
+              />
+            <CardContent>
+            <Typography variant="body1" style={{marginBottom: '30px'}}>
                 Display entire workout history by chosen plan. Charts are ordered by their sub-groups.
               </Typography>
-              <FormControl className={classes.formControl}>
+            <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="selectPlan">Plan</InputLabel>
                 <Select //displayEmpty
                   value={this.state.selectedPlan}
                   onChange={this.handleSelectPlan}
                   input={<Input name="selectedPlan" id="selectPlan" />}
                 >
-{/* onClick={()=>this.setState({toggleControls: false})}> */}
                   <MenuItem value=""> 
                     <em>None</em>
                   </MenuItem>
@@ -136,38 +152,59 @@ class HistoryCharts extends React.Component {
                 </Select>
                 <FormHelperText>Select from all your workout plans.</FormHelperText>
               </FormControl>
-              {/* <button onClick={()=> this.setState({toggleControls: false})}>reset</button> */}
-            </Paper>
-          </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
 
         {showControls 
-          ? 
-              <Grid item xs={3}>
-                  <Slide direction="left" in={showControls}  >
-                    <Paper className={classes.paper}>
-                      <ChartControls select
-                        setDataType={this.setDataType}
-                      />
-                    </Paper>
-                  </Slide>
-                </Grid>
+          ? <Grid item sm={4} xs={12}>
+              <Slide direction="left" in={showControls}  >
+                
+                  <ChartControls select
+                    setDataType={this.setDataType}
+                  />
+                
+              </Slide>
+            </Grid>
           : null}
 
         
-                    {showControls && this.state.groupedLogs.map((logs, i) => (
-                <Grid item xs={12} key={i}>
-                  <Slide direction="up" in={showControls}>
-                  <Paper className={classes.paper}>
-                      <GroupDataChart 
-                          logs={logs} 
-                          key= {i} 
-                          groupTitle={this.state.groups[i] && this.state.groups[i].title}
-                          dataTypeSelected={this.state.dataTypeSelected}
-                          />
-                  </Paper>  
-                  </Slide>
-                </Grid>
-                    ))}
+        {showControls && this.state.groupedLogs.map((logs, i) => (
+          <Grid item xs={12} key={i}>
+            <Slide direction="up" in={showControls}>
+            {/* <Paper className={classes.paper}> */}
+            <Card>
+            <CardHeader disableTypography
+                className={classes.chartCardHeader}
+                title={
+                  <Typography 
+                    className={classes.headers} 
+                    variant="subtitle1">
+                    Group {this.state.groups[i] && this.state.groups[i].title}
+                  </Typography>
+                }
+              />
+            <CardContent>
+            <GroupDataChart 
+                    logs={logs} 
+                    key= {i} 
+                    // groupTitle={this.state.groups[i] && this.state.groups[i].title}
+                    dataTypeSelected={this.state.dataTypeSelected}
+                    />
+            </CardContent>
+          </Card>
+                
+                
+                {/* <GroupDataChart 
+                    logs={logs} 
+                    key= {i} 
+                    groupTitle={this.state.groups[i] && this.state.groups[i].title}
+                    dataTypeSelected={this.state.dataTypeSelected}
+                    /> */}
+            {/* </Paper>   */}
+            </Slide>
+          </Grid>
+        ))}
         </Grid>
       </div>
     );

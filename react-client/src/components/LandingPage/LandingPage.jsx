@@ -40,8 +40,25 @@ const styles = theme => ({
   }
 });
 
-function LandingPage(props) {
-  const { classes, setAuthFromLogIn, isAuth } = props;
+class LandingPage extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      redirect: false
+    }
+  }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevProps.isAuth !== this.props.isAuth) {
+  //     this.setState({redirect: true})
+  //   }
+  // }
+
+  render() {
+    const { classes, setAuthFromLogIn, isAuth } = this.props;
+    // if (isAuth) {
+    //   return <Redirect to="/home"/>
+    // }
   return (
     <React.Fragment>
       <div className={classes.layout}>
@@ -57,12 +74,12 @@ function LandingPage(props) {
           </Typography>
         </div>
         {/* End hero unit */}
-      
+      {console.log('landingPage says', isAuth)}
       {isAuth 
         ? null
         : <div className={classes.getStartedContainer}>
           <div>
-            <Route exact path="/landingPage/" component={GetStarted} />
+            <Route exact path="/landingPage" component={GetStarted} />
             <Route path="/landingPage/signIn" render={(props)=> (
               <SignIn setAuthFromLogIn={setAuthFromLogIn} {...props}/>)}/>
               <Route path="/landingPage/register" component={RegisterUser} />
@@ -78,6 +95,8 @@ function LandingPage(props) {
     </React.Fragment>
   );
 }
+}
+
 
 
 export default withStyles(styles)(LandingPage);

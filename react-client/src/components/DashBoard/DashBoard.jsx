@@ -28,7 +28,7 @@ class Dashboard extends React.Component {
     this.state = {
       open: false,
       drawerWidth: 240,
-      userID: 1
+      // userID: 1
     }
   };
 
@@ -61,7 +61,7 @@ class Dashboard extends React.Component {
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
             <DashRouter 
-              userID={this.state.userID}
+              // userID={this.state.userID}
               setAuthFromLogIn={this.props.setAuthFromLogIn}
               isAuth={this.props.isAuth}
             />

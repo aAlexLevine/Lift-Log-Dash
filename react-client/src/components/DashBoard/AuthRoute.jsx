@@ -7,7 +7,7 @@ const AuthRoute = ({component: Component, isAuth, ...rest}) => (
     render={(props) => (
       isAuth 
         ? <Component {...props} {...rest} isAuth={isAuth} />
-        : <Redirect to="/landingPage/"/>
+        : <Redirect to="/"/>
     )}/>
 )
 

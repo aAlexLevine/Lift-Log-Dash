@@ -63,7 +63,7 @@ class SignIn extends React.Component {
 
   handleChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     })
   }
 
@@ -86,17 +86,17 @@ class SignIn extends React.Component {
       })
   }
 
-  logout = () => {
-    axios.post('/api/auth/logout')
-      .then(res => console.log('logout client', res))
-      .catch(err => console.log(err))
-  }
+  // logout = () => {
+  //   axios.post('/api/auth/logout')
+  //     .then(res => console.log('logout client', res))
+  //     .catch(err => console.log(err))
+  // }
 
-  test = () => {
-    axios.get('/api/auth/test')
-    .then(res => console.log('client api test', res))
-    .catch(err => console.log(err))
-  }
+  // test = () => {
+  //   axios.get('/api/auth/test')
+  //   .then(res => console.log('client api test', res))
+  //   .catch(err => console.log(err))
+  // }
 
   render() {
     const { classes } = this.props;
@@ -117,11 +117,11 @@ class SignIn extends React.Component {
           <form className={classes.form} onSubmit={this.handleSubmit}>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="userName">User Name</InputLabel>
-              <Input id="userName" name="userName" value={this.state.userName} onChange={this.handleChange} autoFocus />
+              <Input id="userName" name="userName" value={this.state.userName} onChange={this.handleChange} autoFocus autoComplete="off"/>
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="pass">Password</InputLabel>
-              <Input name="pass" id="pass" value={this.state.pass} onChange={this.handleChange}/>
+              <Input name="pass" id="pass" type="password" value={this.state.pass} onChange={this.handleChange} autoComplete="off"/>
             </FormControl>
             {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -137,13 +137,13 @@ class SignIn extends React.Component {
               Sign in
             </Button>
 
-            <Button type="button" onClick={this.logout} color="secondary">
+            {/* <Button type="button" onClick={this.logout} color="secondary">
               run logout 
             </Button>
 
             <Button type ="button" onClick={this.test} color="secondary">
               run test api 
-            </Button>
+            </Button> */}
 
             <Typography variant="subtitle2" align="center" color="secondary">{this.state.errMessage}</Typography>
           </form>

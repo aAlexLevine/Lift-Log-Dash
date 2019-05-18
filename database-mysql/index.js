@@ -11,30 +11,23 @@ const selectAll = function(callback) {
   return new Promise((resolve, reject) => {
     connection.query('SELECT * FROM logs', function(err, results, fields) {
       if(err) {
-        // callback(err, null);
         reject(err)
       } else {
-        // callback(null, results);
         resolve(results)
         console.log('--',results)
       }
     });
   })
-
 };
 
-const createNewWorkOut = (data) => {
-  console.log('dataaaaa',data)
-  
+const createNewWorkOut = (data, userID) => {
   return new Promise((resolve, reject) => {
   connection.query(`
     INSERT INTO logs (dateCreated, user_id, plan_id, plan_group)
-    VALUES (now(), ${data.userID}, ${data.plan}, '${data.planGroup}');`, (err, results, fields) => {
+    VALUES ('${data.date}', ${userID}, ${data.plan}, '${data.planGroup}');`, (err, results, fields) => {
       if (err) {
         reject(err)
       } else {
-        // return results
-        // console.log('fields in DB',fields)
         resolve(results)
       }
     })
@@ -86,7 +79,15 @@ const insertSets = (set) => {
   return new Promise((resolve, reject) => {
     connection.query(`
     INSERT INTO sets_rest (logs_id, exercise, setNum, weight, reps, rest, date)
-    VALUES (${set.logID}, '${set.data.exercise}', ${set.data.setNum}, ${set.data.weight}, ${set.data.reps}, ${set.data.rest}, now())`,
+    VALUES (
+      ${set.logID}, 
+      '${set.data.exercise}', 
+      ${set.data.setNum}, 
+      ${set.data.weight}, 
+      ${set.data.reps}, 
+      ${set.data.rest}, 
+      '${set.date}'
+      )`,
       (err, results, fields) => {
         if (err) {
           reject(err)

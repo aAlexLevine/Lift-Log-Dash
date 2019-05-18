@@ -8,6 +8,7 @@ import TestColors from '../HistoryCharts/testcolors.jsx'
 import AuthRoute from './AuthRoute.jsx';
 import AddPlans from '../AddPlans/AddPlans.jsx'
 import TableContainer from '../NewWorkout/TableContainer.jsx';
+// import Loading from './Loading.jsx'
 
 class DashRouter extends React.Component {
   constructor(props){
@@ -26,8 +27,22 @@ class DashRouter extends React.Component {
       <div>
           <Route 
               exact path="/" 
-              render={() => (<Redirect to="/landingPage"/>)}
+              render={() => {
+                console.log('router says', this.props.isAuth)
+                return (
+                  this.props.isAuth 
+                    ? <Redirect to='/home' />
+                    : <Redirect to="/landingPage"/>
+                )
+              }}
           />
+           {/* <Route 
+              path="/loading" 
+              render={(props) => <Loading {...props} 
+                // setAuthFromLogIn={this.props.setAuthFromLogIn}
+                isAuth={this.props.isAuth}
+                />}
+          /> */}
           <Route 
               path="/landingPage" 
               render={(props) => <LandingPage {...props} 
@@ -38,14 +53,14 @@ class DashRouter extends React.Component {
           <AuthRoute 
               path="/home" 
               component={HomeDash} 
-              userID={this.props.userID}
+              // userID={this.props.userID}
               liftStateUpFromCreateNewWorkout={this.liftStateUpFromCreateNewWorkout}
               isAuth={this.props.isAuth}
           />
           <AuthRoute 
               path="/historyCharts" 
               component={HistoryCharts} 
-              userID={this.props.userID}
+              // userID={this.props.userID}
               isAuth={this.props.isAuth}
           />
   
@@ -66,7 +81,7 @@ class DashRouter extends React.Component {
           
           <Route path="/testColors" component={TestColors} />
         
-        {/* <Route path="*" render={()=>(<Redirect to="/landingPage"/>)} /> */}
+        {/* <Route path="*" render={()=>(<Redirect to="/"/>)} /> */}
         
       </div>
     )

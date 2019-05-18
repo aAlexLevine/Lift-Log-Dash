@@ -60,12 +60,6 @@ const SideMenu = (props) => {
 
             {props.isAuth
               ? <div>
-                  {/* <img 
-                  src="https://vectr.com/tmp/b3VSL02v5n/e1bkG1d88O.svg?width=300&height=300&select=e1bkG1d88Opage0&source=page"
-                  height="100"
-                  width="200"
-                  align="middle"
-                  /> */}
                   <List>{mainListItems}</List>
                   {/* <Divider /> */}
                   <SecondaryListItems setAuthFromLogOut={props.setAuthFromLogOut}/>

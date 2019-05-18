@@ -11,6 +11,8 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Divider from '@material-ui/core/Divider';
 import Headers from './Headers.jsx'
 import Rows from './Rows.jsx'
+import purple from '@material-ui/core/colors/purple';
+
 
 const firstColumn = {
   position: 'sticky',
@@ -37,26 +39,27 @@ const styles = (theme) => ({
     bottom: '-60px',
     // backgroundColor: '#00daf1'//'#0072ff',
     // boxShadow: '5px 10px 10px grey'
-   
   },
-  title: {
-    // color: 'white'
-   },
   topSpacer: {
     // height: '80px'
+    backgroundColor: purple[500],
+    width: '100%'
+  },
+  headerText: {
+    color: 'white'
   }
 });
 
 const NewWorkoutTable = (props) => {
-  const { classes, updateExerciseValues} = props;
-  const date = new Date()
-  const dateStr = date.toDateString()
+  const { classes, updateExerciseValues, planName, groupTitle, date} = props;
+  const dateStr = new Date(date).toDateString()
   return (
     <div >
       <Card className={classes.root}>
         <CardHeader className={classes.topSpacer}
           title={dateStr}
-          subheader="Plan: 5 x 5 | Group: A"
+          classes={{title: classes.headerText, subheader: classes.headerText}}
+          subheader={`Plan: ${planName} | Group: ${groupTitle}`}
         />
         <Divider variant="middle" />
         <CardContent>

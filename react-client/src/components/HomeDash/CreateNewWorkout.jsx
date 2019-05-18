@@ -8,10 +8,16 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Route, Redirect } from 'react-router-dom';
-
+import { Redirect } from 'react-router-dom';
+import Paper from '@material-ui/core/Paper';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import Typography from '@material-ui/core/Typography';
+import Slide from '@material-ui/core/Slide';
+import './animate.css'
+import { YYYYMMDDformat } from '../../utils/helpers.js'
 
 const styles = (theme) => ({
   select: {
@@ -21,6 +27,45 @@ const styles = (theme) => ({
     margin: theme.spacing.unit,
     minWidth: 120,
   },
+  headers: {
+    color: 'white'
+  },
+  arrowButton: {
+    textAlign: 'center',
+    position: 'relative',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    left: '13px',
+  },
+  arrow: {
+    fontSize: '80px',
+    color: 'black',
+    animation: 'bounce 1s infinite linear',
+    position: 'relative',
+
+  },
+  arrowStatic: {
+    fontSize: '80px',
+    color: 'black',
+    position: 'relative',
+    textAlign: 'center',
+    position: 'relative',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    left: '13px'
+  },
+  startPaper: {
+    marginLeft: '24px',
+    rounded: '10px'
+
+  },
+  startCardHeader: {
+    backgroundColor: '#4a4949'
+  },
+  chartCardHeader: {
+    backgroundColor: '#4a4949',
+    marginBottom: '15px'
+  }
 })
 
 class CreateNewWorkout extends React.Component {
@@ -36,11 +81,7 @@ class CreateNewWorkout extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/dash/getPlans', {
-      params: {
-        user: this.props.userID
-      }
-    })
+    axios.get('/api/dash/getPlans')
       .then(plans => {this.setState({plansData: plans.data})})
       .catch(err => console.log(err))
   }
@@ -67,21 +108,21 @@ class CreateNewWorkout extends React.Component {
   createNewWorkOut = () => {
     const { selectedPlan, selectedGroup } = this.state
     const logData = {
-      userID: this.props.userID,
       plan: selectedPlan.id,
-      planGroup: selectedGroup.title
+      planGroup: selectedGroup.title,
+      date: YYYYMMDDformat(this.props.date)
     }
-    console.log('log data obj',logData)
     if (selectedPlan && selectedGroup) {
       axios.post('/api/dash/createNewWorkOut', logData)
         .then(results => {
-          // console.log('Created new workout log.', results.data)
           const selected = {
-              userID: this.props.userID,
-              plan: selectedPlan,
-              group: selectedGroup,
-              logID: results.data.insertId
+            plan: selectedPlan,
+            group: selectedGroup,
+            logID: results.data.insertId,
+            date: this.props.date 
+            // results.data.date.slice(0, 10)
           }
+          console.log('Created new workout log.', selected)
           this.props.liftStateUpFromCreateNewWorkout(selected)
           this.setState({redirect: true})
         })
@@ -99,56 +140,70 @@ class CreateNewWorkout extends React.Component {
     
     return (
       <div className={classes.select}>
+      <Card>
+        <CardHeader disableTypography
+          className={classes.startCardHeader}
+          title={
+            <Typography 
+              className={classes.headers} 
+              variant="subtitle1">
+              Start new workout 
+              </Typography>
+          }
+        />
+        <CardContent>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="plan-helper">Plan</InputLabel>
+            <Select
+              value={this.state.selectedPlan}
+              onChange={this.handleSelectPlan}
+              input={<Input name="plan" id="plan-helper" />}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {this.state.plansData.map((plan) => (
+                <MenuItem value={plan} key={plan.id}>{plan.planName}</MenuItem>  
+              ))}
+            </Select>
+            <FormHelperText>Select plan.</FormHelperText>
+          </FormControl>
+        
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="group-helper">Group</InputLabel>
+            <Select
+              value={this.state.selectedGroup}
+              onChange={this.handleSelectGroup}
+              input={<Input name="group" id="group-helper" />}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {this.state.groupsData.map((group) => (
+                <MenuItem value={group} key={group.id}>{group.title}</MenuItem>  
+              ))}
+            </Select>
+            <FormHelperText>Select sub-groups.</FormHelperText>
+          </FormControl>
+        </CardContent>  
+        </Card>
 
-        <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="plan-helper">Plan</InputLabel>
-          <Select
-            value={this.state.selectedPlan}
-            onChange={this.handleSelectPlan}
-            input={<Input name="plan" id="plan-helper" />}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {this.state.plansData.map((plan) => (
-              <MenuItem value={plan} key={plan.id}>{plan.planName}</MenuItem>  
-            ))}
-          </Select>
-          <FormHelperText>Select from all your workout plans.</FormHelperText>
-        </FormControl>
+        {/* <Slide direction="left" in={!!(selectedPlan.id && selectedGroup.id)} mountOnEnter unmountOnExit> */}
+          {/* <Paper className={classes.startPaper} square={false} rounded> */}
+          <div>
+            {(!!(selectedPlan.id && selectedGroup.id))
+              ? <IconButton 
+                  className={classes.arrowButton} 
+                  onClick={this.createNewWorkOut}
+                  >
+                  <ArrowForwardIosIcon className={classes.arrow}/>
+                </IconButton>
+              : <ArrowForwardIosIcon className={classes.arrowStatic}/>
+            }
+          </div>
+              {/* </Paper> */}
+            {/* </Slide> */}
 
-        <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="group-helper">Group</InputLabel>
-          <Select
-            value={this.state.selectedGroup}
-            onChange={this.handleSelectGroup}
-            input={<Input name="group" id="group-helper" />}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {this.state.groupsData.map((group) => (
-              <MenuItem value={group} key={group.id}>{group.title}</MenuItem>  
-            ))}
-          </Select>
-          <FormHelperText>Select from plan's sub-groups.</FormHelperText>
-        </FormControl>
-
-        {(selectedPlan.id && selectedGroup.id) 
-          ? <IconButton 
-              className={classes.button} 
-              aria-label="Delete"
-              onClick={this.createNewWorkOut}
-              >
-            {/* <Link to="/new"> */}
-              <ArrowForwardIosIcon fontSize="large"/>
-            {/* </Link> */}
-            </IconButton>
-          : <ArrowForwardIosIcon fontSize="large"/>}
-
-          {/* <Route path="/new" render={(props)=> (<NewWorkoutTable group={selectedGroup}/>)}/> */}
-
-          
       </div>  
     )
   }

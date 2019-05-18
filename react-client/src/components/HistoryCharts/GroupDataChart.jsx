@@ -105,6 +105,7 @@ class GroupDataChart extends React.Component {
   }
 
   calculateAverageLift = (sets) => {
+    console.log('sets in average lift', sets)
     const totalSets = sets.length
     const totalWeightLifted = sets.reduce((sum, set) => sum + (set.weight * set.reps), 0)
     const totalRepsPerformed = sets.reduce((sum, set) => sum + set.reps, 0)
@@ -119,7 +120,7 @@ class GroupDataChart extends React.Component {
   render() {
     return (
       <div style={chartContainer}>
-        <div style={groupTitle}>{this.props.groupTitle}</div>
+        {/* <div style={groupTitle}>{this.props.groupTitle}</div> */}
         <ChartByGroup 
             dataTypeSelected={this.state[this.props.dataTypeSelected]}
             // maxLifts={this.state.maxLiftsData} 
@@ -134,7 +135,7 @@ export default GroupDataChart;
 
 const chartContainer = {
   width: '100%',
-  marginBottom: '50px'
+  marginBottom: '10px'
 }
 
 const chart = {

@@ -12,7 +12,8 @@ router.get('/isAuth', function (req, res) {
 });
 
 router.post('/createNewWorkout', (req, res) => {
-  db.createNewWorkOut(req.body)
+  console.log('user---',req.userID)
+  db.createNewWorkOut(req.body, req.userID, )
     .then(response => {
       console.log('Response from DB, recieved at server createNewWorkOut', response)
       res.send(response)
@@ -21,7 +22,7 @@ router.post('/createNewWorkout', (req, res) => {
 })
 
 router.get('/getPlans', (req, res) => {
-  db.getPlans(req.query.user)
+  db.getPlans(req.userID)
     .then( response => res.send(response))
     .catch( err => console.log(err))
 })
@@ -45,8 +46,8 @@ router.post('/insertSets', (req, res) => {
 })
 
 router.get('/getLastThreeLogIds', (req, res) => {
-  const {userID, planID, group} = req.query
-  db.getLastThreeLogIds(userID, planID, group)
+  const { planID, group } = req.query
+  db.getLastThreeLogIds(req.userID, planID, group)
     .then(response => res.send(response))
     .catch(err => console.log(err))
 })
@@ -67,8 +68,8 @@ router.get('/getSetsRestByLogid', (req, res) => {
 })
 
 router.get('/getAllWorkoutLogsByGroup', (req, res) => {
-  const {userID, planID, group} = req.query
-  db.getAllWorkoutLogsByGroup(userID, planID, group)
+  const {planID, group} = req.query
+  db.getAllWorkoutLogsByGroup(req.userID, planID, group)
     .then(response => res.send(response))
     .catch(err => console.log(err))
 })
@@ -90,6 +91,22 @@ router.post('/createNewPlan', (req, res) => {
     res.send('Plan created.')
   })
   .catch(err => console.log(err))
+})
+
+router.post('/submitWorkout', (req, res, next) => {
+  const { workoutData, logID, date } = req.body
+  for (let row in workoutData) {
+    for (let set in workoutData[row]) {
+      const setData = {
+        logID,
+        data: workoutData[row][set],
+        date: date
+      }
+      db.insertSets(setData)
+        .catch(err => console.log(err))
+    }
+  }
+  res.send('submitting sets...')
 })
 
 module.exports = router

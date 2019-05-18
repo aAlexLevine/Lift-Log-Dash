@@ -8,6 +8,10 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import Typography from '@material-ui/core/Typography';
 
 const styles = (theme) => ({
   maxLiftRadio: {
@@ -24,7 +28,7 @@ const styles = (theme) => ({
   },
   checked: {},
   formControl: {
-    margin: theme.spacing.unit * 3,
+    // margin: theme.spacing.unit * 3,
     // display: 'flex'
   },
   group: {
@@ -33,6 +37,13 @@ const styles = (theme) => ({
   },
   radiosContainer: {
     // display: 'flex'
+  },
+  headers: {
+    color: 'white'
+  },
+  chartCardHeader: {
+    backgroundColor: '#4a4949',
+    marginBottom: '15px'
   }
 });
 
@@ -51,8 +62,20 @@ class ChartControls extends React.Component {
 
     return (
       <div>
+        <Card>
+          <CardHeader
+            className={classes.chartCardHeader}
+            title={
+              <Typography 
+                className={classes.headers} 
+                variant="subtitle1">
+                Data Type
+              </Typography>
+            }
+          />
+          <CardContent>
       <FormControl component="fieldset" className={classes.formControl}>
-      <FormLabel focused={false} component="legend">Data Type</FormLabel>
+      {/* <FormLabel focused={false} component="legend">Data Type</FormLabel> */}
       {/* <div> */}
       <RadioGroup row
         aria-label="Data Type"
@@ -86,8 +109,10 @@ class ChartControls extends React.Component {
         />
         {/* </div> */}
       </RadioGroup>
-      <FormHelperText>labelPlacement start</FormHelperText>
+      {/* <FormHelperText>labelPlacement start</FormHelperText> */}
     </FormControl>
+    </CardContent>
+        </Card>
       </div>
     );
   }

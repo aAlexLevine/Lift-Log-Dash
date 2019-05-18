@@ -3,12 +3,14 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import DashBoard from './components/DashBoard/DashBoard.jsx';
 import axios from 'axios';
+import Loading from './Loading.jsx'
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isAuth: false 
+      isAuth: false,
+      loading: true
     }
   }
 
@@ -16,7 +18,10 @@ class App extends React.Component {
     axios.get('/api/dash/isAuth')
       .then(response => {
         console.log('response in isAuthCLient', response.data)
-        this.setState({isAuth: response.data.value}) 
+        this.setState({
+          isAuth: response.data.value,
+          loading: false
+        })
       })
       .catch(err => console.log(err))
   }
@@ -29,16 +34,20 @@ class App extends React.Component {
   }
 
   render() {
+    if (this.state.loading) {
+      return <Loading/>
+    }
     return (
       <div>      
         <Router>
-          <Route render={(props) => (
-              <DashBoard {...props} 
+          <Route render={(props) => {
+            console.log('app says', this.state.isAuth)
+            return <DashBoard {...props} 
                   isAuth={this.state.isAuth}
                   setAuthFromLogIn={this.setAuthFromLogIn}  
                   setAuthFromLogOut={this.setAuthFromLogOut}    
                   />
-          )}/>
+          }}/>
           
         </Router>
       </div>

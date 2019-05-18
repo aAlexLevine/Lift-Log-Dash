@@ -8,93 +8,175 @@ import LastWeeksBarChart from './LastWeeksBarChart.jsx'
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardActions from '@material-ui/core/CardActions';
-
+import { MDformat } from '../../utils/helpers.js';
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    // overflow:'hidden'
-    // marginTop: theme.spacing.unit * 3,
   },
   paper: {
     padding: theme.spacing.unit * 2,
     textAlign: 'left',
-    color: theme.palette.text.secondary,
-    // wordWrap: 'break-word'
   },
+  headers: {
+      color: 'white'
+  },
+  arrowButton: {
+    textAlign: 'center',
+    position: 'relative',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    left: '13px'
+    
+  },
+  arrow :{
+    fontSize: '80px',
+    color: 'black',
+    animation: 'bounce 1s infinite linear',
+    position: 'relative'
+  },
+  startPaper: {
+    marginLeft: '24px'
+  },
+  startCardHeader : {
+    backgroundColor: '#4a4949'
+  },
+  chartCardHeader: {
+    backgroundColor: '#4a4949',
+    marginBottom: '15px'
+  }
+  
 });
 
-function HomeDash(props) {
-  const { classes, userID } = props;
-  const date = new Date()
-  const dateStr = date.toDateString()
-  console.log('HomE DaSh props', props.userID)
-  
-  // TODO: Convert paper to cards
-  return (
-    <div className={classes.root}>
-      <Grid container spacing={24}>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-      
-      {/* chart */}
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>
-          <Typography variant="subtitle1" gutterBottom>
-                Last week's progress
+class HomeDash extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state ={
+      date: {},
+      dateFormatted: ''
+    }
+  }
+
+  componentDidMount() {
+    this.setDate()
+  }
+
+  setDate = () => {
+    console.log('setdate func')
+    const dayNames = {
+      0: "Sun",
+      1: "Mon",
+      2: "Tue",
+      3: "Wed",
+      4: "Thu",
+      5: "Fri",
+      6: "Sat"
+    }
+    const date = new Date()
+    const day = date.getDate()
+    const dayName = date.getDay()
+    const month = date.getMonth()
+    let year = date.getFullYear().toString()
+    year = year.slice(year.length  - 2)
+    const dateFormat = `${dayNames[dayName]} ${day}.${month + 1}.${year}` 
+    
+    this.setState({date: date, dateFormatted: MDformat(date)})
+    
+  }
+
+  render() {
+    const { classes, liftStateUpFromCreateNewWorkout } = this.props;
+    return (
+      <div className={classes.root}>
+        <Grid container spacing={24}>
+
+        <Grid item sm={3} xs={12}>
+            <Paper 
+              style={{backgroundColor: 'orange'}} 
+              className={classes.paper}
+            >
+              <Typography className={classes.headers} variant="h4">
+                  {this.state.dateFormatted}
               </Typography>
-              <LastWeeksBarChart/>
-          </Paper>
-        </Grid>
+              <Typography className={classes.headers} variant="subheading">
+                  Today
+              </Typography>
+            </Paper>
+          </Grid>
 
-         {/* Newworkout */}
-          <Grid item xs={6} zeroMinWidth>
-          <Card>
-            <CardHeader disableTypography
-                title={<Typography variant="subtitle1">Today is: </Typography>}
-                subheader={<Typography variant="h4">{dateStr}</Typography>}
+          <Grid item sm={3} xs={12}>
+            <Paper 
+              style={{backgroundColor: '#d232d2'}} 
+              className={classes.paper}
+            >
+              <Typography className={classes.headers} variant="h4">
+                  5 x 5 | B
+              </Typography>
+              <Typography className={classes.headers} variant="subheading">
+                  Last workout
+              </Typography>
+            </Paper>
+            
+          </Grid>
+
+          <Grid item sm={3} xs={12}>
+            <Paper 
+              style={{backgroundColor: 'blue'}} 
+              className={classes.paper}
+            >
+              <Typography className={classes.headers} variant="h4">
+                  34
+              </Typography>
+              <Typography  className={classes.headers} variant="subheading">
+                  Workouts logged
+              </Typography>
+            </Paper>
+          </Grid>
+
+          <Grid item sm={3} xs={12}>
+            <Paper 
+              style={{backgroundColor: '#36c336'}} 
+              className={classes.paper}
+              >
+              <Typography className={classes.headers} variant="h4">
+                  15630
+              </Typography>
+              <Typography className={classes.headers} variant="subheading">
+                  Total weight lifted
+              </Typography>
+              </Paper>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Card>
+              <CardHeader disableTypography
+                  className={classes.chartCardHeader}
+                  title={
+                    <Typography 
+                      className={classes.headers} 
+                      variant="subtitle1">
+                      Recent Activity
+                    </Typography>
+                  }
+                />
+              <CardContent>
+                <LastWeeksBarChart/>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xl={6} xs={12} zeroMinWidth style={{display: 'flex'}}>
+            <CreateNewWorkout 
+                date={this.state.date}
+                // userID={userID}
+                liftStateUpFromCreateNewWorkout={liftStateUpFromCreateNewWorkout}
             />
-            <CardContent>
-            <Typography variant="subtitle1">Launch new workout log </Typography>
-              
-              <CreateNewWorkout 
-                  userID={userID}
-                  liftStateUpFromCreateNewWorkout={props.liftStateUpFromCreateNewWorkout}
-              />
-            </CardContent>
-          </Card>        
+          </Grid>
+        
         </Grid>
-
-      {/* Last workout */}
-      <Grid item xs={6}>
-          <Paper className={classes.paper}>
-            <Typography variant="subtitle1">
-              Last recorded workout:
-            </Typography>
-            <Typography variant="h4">
-              {dateStr}
-            </Typography>
-            <Typography variant="h6">
-              Plan: 5 x 5,  Group: B
-            </Typography>
-          </Paper>
-        </Grid>
-      
-      </Grid>
-
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 export default withStyles(styles)(HomeDash);

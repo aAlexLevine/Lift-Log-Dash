@@ -24,8 +24,9 @@ const styles = theme => ({
       borderBottomColor: purple[500],
     },
   },
-  inputContainer:{display:'flex'},
-  inputView: {minWidth: '30px'},
+  inputContainer: {display:'flex'},
+  weightInputView: {minWidth: '50px'},
+  repsInputView: {minWidth: '30px'},
   xDivider: {
     marginTop: '23px',
     marginLeft: '20px',
@@ -52,7 +53,9 @@ const DataCellInput = (props) => {
         </InputLabel>
         <Input
           id="reps"
-          className={classes.inputView}
+          type="number"
+          autoComplete="off"
+          className={classes.repsInputView}
           value={formLocation.reps}
           onChange={(e) => updateExerciseValues(exercise, set, 'reps', e.target.value)}
           classes={{
@@ -75,8 +78,10 @@ const DataCellInput = (props) => {
         </InputLabel>
         <Input
           id="weight"
-          className={classes.inputView}
-          value={formLocation.weight || ''}
+          type="number"
+          autoComplete="off"
+          className={classes.weightInputView}
+          value={formLocation.weight}
           onChange={(e) => updateExerciseValues(exercise, set, 'weight', e.target.value)}
           classes={{
             underline: classes.cssUnderline,

@@ -99,15 +99,15 @@ class RegisterUser extends React.Component {
           <form className={classes.form} autoComplete="off">
             <FormControl margin="normal" required fullWidth>
               <InputLabel>Name</InputLabel>
-              <Input id="userName" name="userName" value={this.state.userName} onChange={this.handleChange} autoFocus />
+              <Input id="userName" name="userName" value={this.state.userName} onChange={this.handleChange} autoFocus autoComplete="off"/>
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input id="email" name="email" value={this.state.email} onChange={this.handleChange}/>
+              <Input id="email" name="email" value={this.state.email} onChange={this.handleChange} autoComplete="off"/>
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="password">Password</InputLabel>
-              <Input name="pass" id="pass" value={this.state.pass} onChange={this.handleChange}/>
+              <Input name="pass" id="pass" type="password" value={this.state.pass} onChange={this.handleChange} autoComplete="off"/>
             </FormControl>
             <Button
               onClick={this.handleSubmit}

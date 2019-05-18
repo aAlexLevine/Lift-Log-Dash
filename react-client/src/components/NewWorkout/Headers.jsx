@@ -6,7 +6,7 @@ const Headers = (props) => (
         <TableCell>
           Set {props.idx + 1}
         </TableCell>
-        {props.idx + 1 < props.numOfHeaders ? <TableCell>Rest</TableCell> : null }
+        {/* {props.idx + 1 < props.numOfHeaders ? <TableCell>Rest</TableCell> : null } */}
       </React.Fragment>      
 )   
 

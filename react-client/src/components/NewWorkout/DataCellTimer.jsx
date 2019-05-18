@@ -1,6 +1,6 @@
 import TableCell from '@material-ui/core/TableCell';
 import React from 'react';
-// import TimerInterface from './TimerInterface.jsx'
+import TimerInterface from './TimerInterface.jsx';
 const prettyMs = require('pretty-ms');
 // const parseMS = require('parse-ms');
 import IconButton from '@material-ui/core/IconButton';
@@ -8,7 +8,10 @@ import TimerIcon from '@material-ui/icons/Timer';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
-
+import MoreIcon from '@material-ui/icons/MoreVert';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Input from '@material-ui/core/Input';
 
 const styles = (theme) => ({
   container: {
@@ -27,6 +30,16 @@ const styles = (theme) => ({
   },
   buttonDepressed: {
     transform: 'translateY(4px)'
+  },
+  more: {
+    padding: '0px',
+    margin: '0px'
+  },
+  timeDisplay: {
+    marginBottom: '-10px'
+  },
+  timerInterface: {
+    // display: ''
   }
 })
 
@@ -37,12 +50,9 @@ class DataCellTimer extends React.Component {
     this.state = {
       formattedTime: '0s',
       toggleStopTimer: false,
-      // px : 0,
-      // clockColor: 'black',
-      // toggleInterface: false,
-      // bottomCSS: -69,
       timeElapsed: 0,
-      savedElapsedTime: 0
+      savedElapsedTime: 0,
+      anchorEl: null
     }
   } 
 
@@ -79,60 +89,73 @@ class DataCellTimer extends React.Component {
     this.setState({buttonDepressed: !this.state.buttonDepressed})
   }
 
+  handleMenuClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleMenuClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
 
   render() {
     const { classes } = this.props;
-
-    const clockPressed = {
-      fontSize:'25px',
-      cursor: 'pointer',
-      transform: `translateY(${this.state.px}px)`,
-      color: `${this.state.clockColor}`,
-      margin: 'auto auto',
-      padding: '8px'
-    }
-
     return (
       <TableCell>
         <div className={classes.container}>
-            {/* <IconButton
-              className={classes.timerButton}
-               onMouseDown={this.handleMouseDown}
-               onMouseUp={this.handleMouseUp}
-               onClick={this.state.toggleStopTimer ? this.stopTmer : this.startTimer} 
-            >
-              <TimerIcon/>
-            </IconButton> */}
+          <IconButton 
+            onClick={this.state.toggleStopTimer ? this.stopTmer : this.startInterval}
+            className = {
+              classNames(
+                this.state.toggleStopTimer ? classes.timerButtonActive : classes.timerButton, 
+                this.state.buttonDepressed ? classes.buttonDepressed : null
+              )
+            }
+          >
+            <TimerIcon />
+          </IconButton>
 
-            <IconButton
-              className={
-                classNames(this.state.toggleStopTimer ? classes.timerButtonActive : classes.timerButton, 
-                            this.state.buttonDepressed ? classes.buttonDepressed : null
-                )
-              }
-               onClick={this.state.toggleStopTimer ? this.stopTmer : this.startInterval}
-               onMouseDown={this.toggleButtonDepressed}
-               onMouseUp={this.toggleButtonDepressed}
-
+          <div className={classes.formattedTime}>
+            <Typography className={classes.timeDisplay}
+              align="center" 
+              variant="subtitle1" 
+              gutterBottom 
             >
-                <TimerIcon/>
+              {this.state.formattedTime}
+            </Typography>
+          </div>
+            <IconButton className={classes.more} onClick={this.handleMenuClick}>
+              <MoreIcon />
             </IconButton>
-
-
-
-
-    
-            
-              <div className={classes.formattedTime}>
-                <Typography align="center" variant="subtitle1" gutterBottom>
-                  {this.state.formattedTime}
-                </Typography>
-              
-              </div>
-                {/* <i style={ellipsis} className="fas fa-ellipsis-h" onClick={(event)=>this.toggleInterface(event, true)}></i> */}
-                {/* {this.state.toggleInterface ? <TimerInterface toggleInterface={this.toggleInterface} bottomCSS={this.state.bottomCSS} updateBottomCSS={this.updateBottomCSS}/> : null} */}
-              </div>
-        
+            <Menu id="simple-menu" 
+              anchorEl={this.state.anchorEl} 
+              open={Boolean(this.state.anchorEl)}
+              onClose={this.handleMenuClose}
+            >
+                <MenuItem onClick={this.handleMenuClose}>Reset</MenuItem>
+                <MenuItem className={classes.timerInterface}>
+                Edit
+                  <div>
+                  <Input
+                    placeholder="Placeholder"
+                    // className={classes.input}
+                    inputProps={{
+                      'aria-label': 'Description',
+                    }}
+                  />
+                  <br/>
+                  <Input
+                    placeholder="Placeholder"
+                    // className={classes.input}
+                    inputProps={{
+                      'aria-label': 'Description',
+                    }}
+                  />
+                  </div>
+                </MenuItem>
+                {/* <MenuItem onClick={this.handleMenuClose}>Logout</MenuItem> */}
+            </Menu>
+        </div>
       </TableCell>
     )
   }

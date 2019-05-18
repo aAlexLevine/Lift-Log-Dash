@@ -10,7 +10,8 @@ import { Link } from 'react-router-dom';
 
 const styles = (theme) => ({
   cardHeader: {
-    backgroundColor: theme.palette.grey[200],
+    backgroundColor: '#4a4949',
+    color: 'white',
   },
   options: {
     marginTop: '25px',
@@ -36,47 +37,53 @@ const styles = (theme) => ({
 const GetStarted = (props) => {
   const { classes } = props;
   return (
-    <Card>
-                <CardHeader
-                  title="Get Started"
-                  titleTypographyProps={{ align: 'center' }}
-                  className={classes.cardHeader}
-                />
-                <CardContent className={classes.cardContent}>
-                    <div className={classes.options}>
-                    <Typography variant="subtitle1" align="center">
-                      Need an account? Sign up here!
-                    </Typography>
-                      <Link to="/landingPage/register" className={classes.link}>
-                        <Button fullWidth variant='outlined' color="primary">
-                          Sign up for free
-                        </Button>
-                  </Link>
-                  </div>
-                  <div className={classes.options}>
-                  <Typography variant="subtitle1" align="center">
-                      Already a member? Log in here!
-                    </Typography>
-                    <Link to="/landingPage/signIn" className={classes.link}>
-                      <Button fullWidth variant='outlined' color="primary">
-                          Log In
-                      </Button>
-                    </Link>
-                  </div>
-
-                  <div className={classNames(classes.options, classes.demoDivider)}>
-                  <Typography className={classes.options} variant="subtitle1" align="center">
-                      Just Looking? Try the demo!
-                    </Typography>
-                  </div>
-                
-                </CardContent>
-                <div className={ classes.demo}>
-                    <Button className={classes.demo}variant='outlined' color="primary">
-                    Run demo data
+          <Card>
+            <CardHeader
+              title={
+                <Typography 
+                  className={classes.cardHeader} 
+                  variant="h5">
+                    Get Started
+                </Typography>}
+              titleTypographyProps={{ align: 'center'}}
+              className={classes.cardHeader}
+              
+            />
+            <CardContent className={classes.cardContent}>
+                <div className={classes.options}>
+                <Typography variant="subtitle1" align="center">
+                  Need an account? Sign up here!
+                </Typography>
+                  <Link to="/landingPage/register" className={classes.link}>
+                    <Button fullWidth variant='outlined' color="primary">
+                      Sign up for free
+                    </Button>
+              </Link>
+              </div>
+              <div className={classes.options}>
+              <Typography variant="subtitle1" align="center">
+                  Already a member? Log in here!
+                </Typography>
+                <Link to="/landingPage/signIn" className={classes.link}>
+                  <Button fullWidth variant='outlined' color="primary">
+                      Log In
                   </Button>
-                  </div>
-              </Card>
+                </Link>
+              </div>
+
+              {/* <div className={classNames(classes.options, classes.demoDivider)}>
+              <Typography className={classes.options} variant="subtitle1" align="center">
+                  Just Looking? Try the demo!
+                </Typography>
+              </div> */}
+            
+            </CardContent>
+            {/* <div className={ classes.demo}>
+                <Button className={classes.demo}variant='outlined' color="primary">
+                Run demo data
+              </Button>
+              </div> */}
+          </Card>
   )
 }
 

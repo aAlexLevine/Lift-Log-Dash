@@ -19,14 +19,14 @@ const links = {
 
 export const mainListItems = (
   <div>
-   <Link to="/" style={links}>
+   {/* <Link to="/" style={links}>
     <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Landing Page" />
     </ListItem>
-  </Link> 
+  </Link>  */}
     
     <Link to="/home" style={links}>
     <ListItem button>
@@ -55,14 +55,14 @@ export const mainListItems = (
     </ListItem>
   </Link>
 
-  <Link to="/testColors" style={links}>
+  {/* <Link to="/testColors" style={links}>
     <ListItem button>
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
       <ListItemText primary="Test Colors" />
     </ListItem>
-  </Link>
+  </Link> */}
   </div>
 );
 
@@ -84,7 +84,7 @@ export class SecondaryListItems extends React.Component {
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to ="/landingPage"/>
+      // return <Redirect to ="/landingPage"/>
     } 
     return (
         <div>

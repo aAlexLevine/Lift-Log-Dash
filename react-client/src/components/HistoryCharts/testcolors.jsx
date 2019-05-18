@@ -6,7 +6,7 @@ class ColorTest extends React.Component  {
   constructor() {
     super()
     this.state = {
-      colors : colors
+      colors : colorsBrighter
     }
   }
   
@@ -111,3 +111,19 @@ const  colors = {
 const colors1 = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', 
 '#f58231', '#911eb4', '#46f0f0', '#fabebe', '#e6beff', 
 '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', ]
+
+const colorsBrighter = {
+  lightBlue: '#4494ff',
+  cyan: '#44ffff',
+  orange: '#ffbd44',
+  peach: '#ffaf91',
+  lightPurple: '#e760ff', 
+  skyBlue: '#8fc4ff',
+  deepBlue: '#0d0de9',
+  pinkRed: '#f50057',
+  orangeRed: '#f44336',
+  hotPurple: '#f500d7',
+  violet: '#9d60ff',
+  hotGreen: '#60ff8a',
+  yellow: '#fdff60'
+}

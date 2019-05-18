@@ -79,12 +79,12 @@ class Rows extends React.Component {
                             updateExerciseValues={updateExerciseValues}
                             exercise={this.props.exercise.name}
               />
-              {i + 1 < this.props.setCount ? 
+              {/* {i + 1 < this.props.setCount ? 
                 <DataCellTimer setNum={i + 1}
                               updateRestTime={this.props.updateRestTimePropertyForDataCell} 
                               exercise={this.props.exercise}
                               /> 
-                              : null}  
+                              : null}   */}
             </React.Fragment>
           ))}
         </TableRow>
@@ -102,7 +102,7 @@ class Rows extends React.Component {
                 {workout[this.props.exercise.name].sets.map((set, i) => (
                   <React.Fragment key={'setRestHistory' + i}>
                     <TableCell align="center">{set.reps} x {set.weight}</TableCell>
-                    <TableCell>{set.rest}</TableCell>
+                    {/* <TableCell>{set.rest}</TableCell> */}
                   </React.Fragment>
               ))} 
             </TableRow>

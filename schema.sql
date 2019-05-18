@@ -17,13 +17,7 @@ CREATE TABLE plans (
   id int NOT NULL AUTO_INCREMENT,
   user_id int NOT NULL,
   planName varchar(255) NOT NULL,
-  -- exercise varchar(255) NOT NULL,
-  -- setCount int NOT NULL,
-  -- repTotal int NOT NULL,
-  -- plan_group varchar(255) NOT NULL,
-  PRIMARY KEY (ID),
-  UNIQUE (planName)
- -- remove exercise, repcount?, plangroups
+  PRIMARY KEY (ID)
 );
 
 CREATE TABLE groups (
@@ -31,21 +25,16 @@ CREATE TABLE groups (
   title varchar(255) NOT NULL,
   plan_id int NOT NULL,
   setCount int NOT NULL,
-  -- repCount int NOT NULL,
   PRIMARY KEY (ID)
-  -- should make title UNIQUE
-  -- set count is just to load preset starter data for set headers
 );
 
 CREATE TABLE exercises (
   id int NOT NULL AUTO_INCREMENT,
   name varchar(255) NOT NULL,
-  -- numOfSets int NOT NULL,
   numOfReps int NOT NULL,
   plan_id int NOT NULL,
   group_id int NOT NULL,
   PRIMARY KEY (ID)
-  -- numOfReps is to load preset starter data for reps
 );
 
 CREATE TABLE sets_rest (
@@ -60,18 +49,23 @@ CREATE TABLE sets_rest (
   PRIMARY KEY (ID) 
 );
 
--- CREATE TABLE rest (
---   id int NOT NULL AUTO_INCREMENT,
---   sets_rest_id int NOT NULL,
---   PRIMARY KEY (ID)
--- );
-
 CREATE TABLE logs ( 
   id int NOT NULL AUTO_INCREMENT,
   dateCreated datetime NOT NULL,
+  -- change datetime to just date 
+  -- add planName
+  -- -add group_id
   user_id int NOT NULL,
   plan_id int NOT NULL,
   plan_group varchar(255) NOT NULL,
+  PRIMARY KEY (ID)
+);
+
+CREAT TABLE totals (
+  id int NOT NULL AUTO_INCREMENT,
+  user_id int NOT NULL,
+  weight int,
+  logs int,
   PRIMARY KEY (ID)
 );
 
